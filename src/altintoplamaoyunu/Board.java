@@ -15,9 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-
 import java.text.NumberFormat;
-import java.util.*;
 import struct.*;
 
 
@@ -32,7 +30,7 @@ public class Board extends JFrame implements ActionListener {
     JLabel oyuncuIsmi,oyuncuHedefMaliyet,oyuncuHamleMaliyet,baslangicAltin,adimSayisi;
     JLabel altinolab,galtinolab;
     Point startA,startB,startC,startD;
-    Player Player;
+    Player Player = new Player();
     playerA PlayerA;
     playerB PlayerB;
     playerC PlayerC;
@@ -41,88 +39,57 @@ public class Board extends JFrame implements ActionListener {
     OyunUI oyunUI;
     File file;
    
-    
-    
+  
     public static void main(String []args){
         new Board();
     }
     
     public Board(){
-    setLayout(new FlowLayout(1,30,10));        
-    //setLayout(new GridLayout(1,2));
+        setLayout(new FlowLayout(0,1,0));        
         setTitle("Altın Toplama Oyunu");
         oyun = new JPanel();
-         // oyuncuları nasıl eklenceği düşünülsün
-         oyunBoard = new Oyun(boardx,boardy,altinoran,galtinoran);
-         startA = new Point(0,0);
-         PlayerA = new playerA(startA);
-         PlayerA.hedefBelirle(oyunBoard);
-         startB = new Point(0,boardy-1);
-         PlayerB = new playerB(startB);
-         PlayerB.hedefBelirle(oyunBoard);
-         startC = new Point(boardx-1,boardy-1);
-         PlayerC = new playerC(startC);
-         
-         startD = new Point(boardx-1,0);
-         PlayerD = new playerD(startD);
-      
-    
+        //oyun.setLayout(new FlowLayout(0,1,0));
+        // oyuncuları nasıl eklenceği düşünülsün
+        oyunBoard = new Oyun(boardx,boardy,altinoran,galtinoran);
+        startA = new Point(0,0);
+        PlayerA = new playerA(startA);
+        PlayerA.hedefBelirle(oyunBoard);
+        startB = new Point(0,boardy-1);
+        PlayerB = new playerB(startB);
+        PlayerB.hedefBelirle(oyunBoard);
+        startC = new Point(boardx-1,boardy-1);
+        PlayerC = new playerC(startC);
+        startD = new Point(boardx-1,0);
+        PlayerD = new playerD(startD);
         oyunUI = new OyunUI(oyunBoard);
-         PlayerC.hedefBelirle(oyunBoard,oyunUI);
-        
-      
-        
-        
-       
+        PlayerC.hedefBelirle(oyunBoard,oyunUI);
         oyun.add(oyunUI);
         add(oyun);
-        
         createAyarlar();
         add(ayarlar);
-        
-        
         setMinimumSize(new Dimension(1366,768));
-      
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        
     }
     
-    
-    
     public void fileWrite(Player player){
-       try{
-         
-       FileWriter fw = new FileWriter(file);
-
-               fw.write("\nToplam Adım Sayısı:"+player.getToplamAdim()+"\r\n");
-               fw.write("Gittiği Yerler : { ");
-               for(Point n : player.getGidilenYollar()){
-                  fw.write("("+n.x+","+n.y+") ");
-               }
-               fw.write("}"+"\r\n");
-               
-               
-               
-               
+        try{
+            FileWriter fw = new FileWriter(file);
+            fw.write("\nToplam Adım Sayısı:"+player.getToplamAdim()+"\r\n");
+            fw.write("Gittiği Yerler : { ");
+            for(Point n : player.getGidilenYollar()){
+                fw.write("("+n.x+","+n.y+") ");
+            }
+            fw.write("}"+"\r\n");
             fw.write("Toplanan Altın Sayısı:"+player.getToplananAltinMiktari()+"\r\n");
             fw.write("Harcanan Altın Miktarı:"+player.getHarcananAltinMiktari()+"\r\n");
             fw.write("Kasadaki Altin Miktari:"+(player.getAltinMiktari()+"\r\n"));
             fw.close();
-           
         }catch(IOException e){
             System.out.println("HATAA");
-       }
+        }
     }
-    
-    
-    
-    
-    
-    
-    
-    public void createAyarlar(){
+     public void createAyarlar(){
         ayarlar = new JPanel();
         ayarlar.setLayout(new BoxLayout(ayarlar, BoxLayout.Y_AXIS));
         ayarlar.setBackground(Color.YELLOW);
@@ -159,16 +126,13 @@ public class Board extends JFrame implements ActionListener {
         altinmiktaripoz.add(altinolab);
         altinmiktaripoz.add(altinotxt);
         
-   
-
         galtinolab = new JLabel("Gizli Altın Miktar Oranı :");
         galtinotxt = new JFormattedTextField(NumberFormat.getNumberInstance());
         galtinotxt.setPreferredSize(ayarlabuton1.getPreferredSize());
         galtinotxt.setValue(10L);
         galtinmiktaripoz.add(galtinolab);
         galtinmiktaripoz.add(galtinotxt);
-      
-
+        
         JPanel a = new JPanel();
         a.setLayout(new BoxLayout(a, BoxLayout.Y_AXIS));
         a.add(dimensions);
@@ -243,7 +207,7 @@ public class Board extends JFrame implements ActionListener {
         playerCbaslangicAltinMiktari =new JFormattedTextField(NumberFormat.getNumberInstance());
         playerCbaslangicAltinMiktari.setValue(200L);
         playerCbaslangicAltinMiktari.setPreferredSize(ayarlabuton2.getPreferredSize());
-         baslangicAltin = new JLabel("Altin Miktari :");
+        baslangicAltin = new JLabel("Altin Miktari :");
         
         JPanel oyuncuC = new JPanel();
         oyuncuC.setLayout(new FlowLayout());
@@ -255,10 +219,10 @@ public class Board extends JFrame implements ActionListener {
         oyuncuC.add(baslangicAltin);
         oyuncuC.add(playerCbaslangicAltinMiktari);
         
-         playerDhedefmaliyet =  new JFormattedTextField(NumberFormat.getNumberInstance());
+        playerDhedefmaliyet =  new JFormattedTextField(NumberFormat.getNumberInstance());
         playerDhedefmaliyet.setValue(20L);
         playerDhedefmaliyet.setPreferredSize(ayarlabuton2.getPreferredSize());
-         oyuncuIsmi = new JLabel("D :");
+        oyuncuIsmi = new JLabel("D :");
         oyuncuHedefMaliyet = new JLabel("Hedef Maliyet");
         playerDhamlemaliyet =  new JFormattedTextField(NumberFormat.getNumberInstance());
         playerDhamlemaliyet.setValue(5L);
@@ -267,18 +231,9 @@ public class Board extends JFrame implements ActionListener {
         playerDbaslangicAltinMiktari =new JFormattedTextField(NumberFormat.getNumberInstance());
         playerDbaslangicAltinMiktari.setValue(200L);
         playerDbaslangicAltinMiktari.setPreferredSize(ayarlabuton2.getPreferredSize());
-         baslangicAltin = new JLabel("Altin Miktari :");
+        baslangicAltin = new JLabel("Altin Miktari :");
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        JPanel oyuncuD = new JPanel();
+         JPanel oyuncuD = new JPanel();
         oyuncuD.setLayout(new FlowLayout());
         oyuncuD.add(oyuncuIsmi);
         oyuncuD.add(oyuncuHedefMaliyet);
@@ -288,8 +243,6 @@ public class Board extends JFrame implements ActionListener {
         oyuncuD.add(baslangicAltin);
         oyuncuD.add(playerDbaslangicAltinMiktari);
         
-        
-        
         playerAdimSayisi = new JFormattedTextField(NumberFormat.getNumberInstance());
         playerAdimSayisi.setValue(3L);
         playerAdimSayisi.setPreferredSize(ayarlabuton2.getPreferredSize());
@@ -298,13 +251,6 @@ public class Board extends JFrame implements ActionListener {
         hamleSayi.setLayout(new FlowLayout());
         hamleSayi.add(adimSayisi);
         hamleSayi.add(playerAdimSayisi);
-        
-        
-        
-        
-        
-        
-        
         
         JPanel b = new JPanel();
         b.setLayout(new BoxLayout(b, BoxLayout.Y_AXIS));
@@ -316,9 +262,6 @@ public class Board extends JFrame implements ActionListener {
         b.add(ayarlabuton2);
         oyuncular.add(b);
         oyuncular.setBorder(BorderFactory.createTitledBorder("Oyuncu Ayarlar"));
-        
-        
-        
         
         sonuc = new JPanel();
         sonuc.setLayout(new FlowLayout());
@@ -337,8 +280,6 @@ public class Board extends JFrame implements ActionListener {
         ayarlar.add(oyuncular);
         ayarlar.add(sonuc);
         ayarlar.add(sonuclar);
-        
-        
         
     }
     
@@ -384,19 +325,19 @@ public class Board extends JFrame implements ActionListener {
              //setSize(boardx*80,boardy*50);
             oyunBoard = new Oyun(boardx,boardy,altinoran,galtinoran); 
             
-             playerAhedefmaliyet.setValue(5L);
-             playerAhamlemaliyet.setValue(5L);
-             playerAbaslangicAltinMiktari.setValue(200L);
-             playerBhedefmaliyet.setValue(10L);
-             playerBhamlemaliyet.setValue(5L);
-             playerBbaslangicAltinMiktari.setValue(200L);
-             playerChedefmaliyet.setValue(15L);
-             playerChamlemaliyet.setValue(5L);
-             playerCbaslangicAltinMiktari.setValue(200L);
-             playerDhedefmaliyet.setValue(20L);
-             playerDhamlemaliyet.setValue(5L);
-             playerDbaslangicAltinMiktari.setValue(200L);
-             playerAdimSayisi.setValue(3L);
+            playerAhedefmaliyet.setValue(5L);
+            playerAhamlemaliyet.setValue(5L);
+            playerAbaslangicAltinMiktari.setValue(200L);
+            playerBhedefmaliyet.setValue(10L);
+            playerBhamlemaliyet.setValue(5L);
+            playerBbaslangicAltinMiktari.setValue(200L);
+            playerChedefmaliyet.setValue(15L);
+            playerChamlemaliyet.setValue(5L);
+            playerCbaslangicAltinMiktari.setValue(200L);
+            playerDhedefmaliyet.setValue(20L);
+            playerDhamlemaliyet.setValue(5L);
+            playerDbaslangicAltinMiktari.setValue(200L);
+            playerAdimSayisi.setValue(3L);
              
             startA = new Point(0,0);
             startB = new Point(0,boardy-1);
@@ -406,10 +347,8 @@ public class Board extends JFrame implements ActionListener {
             PlayerB.hedefBelirle(oyunBoard);
             startC = new Point(boardx-1,boardy-1);
             PlayerC = new playerC(startC);
-            
             startD = new Point(boardx-1,0);
             PlayerD = new playerD(startD);
-          
             oyunUI = new OyunUI(oyunBoard);
             PlayerC.hedefBelirle(oyunBoard,oyunUI);
             oyun.removeAll();
@@ -417,12 +356,7 @@ public class Board extends JFrame implements ActionListener {
             oyun.revalidate();
             sonuclab.setText("");
             sonuclab2.setText("");
-
             oyun.add(oyunUI);
-         
-             
-            
-
         }
         if(source == ayarlabuton2){
             
@@ -449,129 +383,106 @@ public class Board extends JFrame implements ActionListener {
             PlayerC.setHedefBelirlemeMaliyet(chedefmaliyet.intValue());
             PlayerC.setHamleMaliyet(chamlemaliyet.intValue());
             PlayerC.setAltinMiktari(cAltinMiktari.intValue());
-            PlayerD.setHedefBelirlemeMaliyet(ahedefmaliyet.intValue());
-            PlayerD.setHamleMaliyet(ahamlemaliyet.intValue());
-            PlayerD.setAltinMiktari(aAltinMiktari.intValue());
+            PlayerD.setHedefBelirlemeMaliyet(dhedefmaliyet.intValue());
+            PlayerD.setHamleMaliyet(dhamlemaliyet.intValue());
+            PlayerD.setAltinMiktari(dAltinMiktari.intValue());
             
             PlayerA.setAdimSayisi(AdimSayisi.intValue());
             PlayerB.setAdimSayisi(AdimSayisi.intValue());
             PlayerC.setAdimSayisi(AdimSayisi.intValue());
             PlayerD.setAdimSayisi(AdimSayisi.intValue());
+            
         }
-        
-        
-        
         if(source == baslabuton){
-        while(!oyunBoard.gameover){
+            while(!oyunBoard.gameover){
            
                oyun.revalidate();
                oyun.repaint();
-              
-               
-               
-          
-             
-            PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint());
-            
-          
-            Point endA = new Point(PlayerA.getEndPoint());
-            
-            if(oyunBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isAltin())
+               if(!(PlayerA.gameoverA)){
+                  PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint(),oyunBoard);
+               if(oyunBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isAltin())
                     oyunUI.hareketA(PlayerA);
-            else{
-                PlayerA.setHedefAldi(true);
-                PlayerA.hedefBelirle(oyunBoard);
-                PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint());
-                oyunUI.hareketA(PlayerA);  
-            }
+               else{
+                    PlayerA.setHedefAldi(true);
+                    PlayerA.hedefBelirle(oyunBoard);
+                    PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint(),oyunBoard);
+                    oyunUI.hareketA(PlayerA);  
+                }
             
-            if(PlayerA.getHedef()){
-                PlayerA.hedefBelirle(oyunBoard);
-            }
-             else
-                 System.out.println("A oyuncu Hedef Alınmadı Devam ediyor!!");
-    
-            
-             
-                
-    
-            PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint());
-           
-             Point endB = new Point(PlayerB.getEndPoint());
-            if(oyunBoard.getGrid()[endB.x][endB.y].isAltin())
-                oyunUI.hareketB(PlayerB);
-            else{
-              PlayerB.setHedefAldi(true);
-              PlayerB.hedefBelirle(oyunBoard);
-              PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint());
-               oyunUI.hareketB(PlayerB);
-            }
-               if(PlayerB.getHedef())
-                 PlayerB.hedefBelirle(oyunBoard);
+               if(PlayerA.getHedef()){
+                    PlayerA.hedefBelirle(oyunBoard);
+                }
                else
-                 System.out.println("B oyuncu Hedef Alınmadı Devam ediyor!!");
-                 
-          
-            
-           
-            PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint());
-            
-            Point endC = new Point(PlayerC.getEndPoint());
-            if(oyunBoard.getGrid()[endC.x][endC.y].isAltin())
-                oyunUI.hareketC(PlayerC);
-            else{
-                PlayerC.setHedefAldi(true);
-                PlayerC.hedefBelirle(oyunBoard,oyunUI);
-                PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint());
-                oyunUI.hareketC(PlayerC);
-            }
-             if(PlayerC.getHedef())
-                       PlayerC.hedefBelirle(oyunBoard,oyunUI);
-            else
-                System.out.println("C oyuncu Hedef Alınmadı Devam Ediyor !!");
-             
-         
-             
+                    System.out.println("A oyuncu Hedef Alınmadı Devam Ediyor!!");
+                }
+               
+               
+               if(!(PlayerB.gameoverB)  ){
+                    PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint(),oyunBoard);
+               if(oyunBoard.getGrid()[PlayerB.getEndPoint().x][PlayerB.getEndPoint().y].isAltin())
+                    oyunUI.hareketB(PlayerB);
+              else{
+                    PlayerB.setHedefAldi(true);
+                    PlayerB.hedefBelirle(oyunBoard);
+                    PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint(),oyunBoard);
+                    oyunUI.hareketB(PlayerB);
+                }
+               if(PlayerB.getHedef())
+                    PlayerB.hedefBelirle(oyunBoard);
+               else
+                    System.out.println("B oyuncu Hedef Alınmadı Devam Ediyor!!");
                 
-                           
-                    endA = new Point(PlayerA.getEndPoint());
-                    endB = new Point(PlayerB.getEndPoint());
-                    endC = new Point(PlayerC.getEndPoint());
+                }
+             
+               if(!(PlayerC.gameoverC) ){
+                     PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint(),oyunBoard);
+               if(oyunBoard.getGrid()[PlayerC.getEndPoint().x][PlayerC.getEndPoint().y].isAltin())
+                    oyunUI.hareketC(PlayerC);
+              else{
+                    PlayerC.setHedefAldi(true);
+                    PlayerC.hedefBelirle(oyunBoard,oyunUI);
+                    PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint(),oyunBoard);
+                    oyunUI.hareketC(PlayerC);
+                }
+               if(PlayerC.getHedef())
+                    PlayerC.hedefBelirle(oyunBoard,oyunUI);
+              else
+                   System.out.println("C oyuncu Hedef Alınmadı Devam Ediyor !!");
+               
+                }
+                   
+                Point endA = new Point(PlayerA.getEndPoint());
+                Point endB = new Point(PlayerB.getEndPoint());
+                Point endC = new Point(PlayerC.getEndPoint());
                     
-    
-             if(PlayerD.getHedef())
-                   PlayerD.hedefBelirle(oyunBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
-      
-             
-              PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint());
-            
-            Point endD = new Point(PlayerD.getEndPoint());
-            if(oyunBoard.getGrid()[endD.x][endD.y].isAltin() && kontrol(endA,endB, endC, endD))
-                oyunUI.hareketD(PlayerD);
-            else{
-                PlayerD.setHedefAldi(true);
-                   PlayerD.hedefBelirle(oyunBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
-                PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint());
-                oyunUI.hareketD(PlayerD);
-            }
-            
-              
-            
-             
-             
-
-           if(PlayerB.getAltinBitti() ||(PlayerB.gameoverB && PlayerA.gameoverA && PlayerC.gameoverC && PlayerD.gameoverD)){
-               break;
-           }
+               if(!(PlayerD.gameoverD) ){
+                   if(PlayerD.getHedef())
+                        PlayerD.hedefBelirle(oyunBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
+                   else
+                        System.out.println("D oyuncu Hedef Alınmadı Devam Ediyor !!");
+                   PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint(),oyunBoard);
+                   Point endD = new Point(PlayerD.getEndPoint());
+                   if(oyunBoard.getGrid()[endD.x][endD.y].isAltin() && kontrol(endA,endB, endC, endD))
+                        oyunUI.hareketD(PlayerD);
+                   else{
+                       PlayerD.setHedefAldi(true);
+                       PlayerD.hedefBelirle(oyunBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
+                       PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint(),oyunBoard);
+                       oyunUI.hareketD(PlayerD);
+                    }
+               }
+               
+               if((PlayerB.gameoverB && PlayerA.gameoverA && PlayerC.gameoverC && PlayerD.gameoverD)){
+                  break;
+                }
            
           
+            }
+        if((PlayerB.gameoverB && PlayerA.gameoverA && PlayerC.gameoverC && PlayerD.gameoverD)){
+            sonuclab.setText(" Oyun Bitti !!");
+            sonuclab2.setText(kazanan());
         }
-         if(PlayerB.getAltinBitti()){
-             sonuclab.setText("Tahtada Altin Bittiği İçin Oyun Bitti!!");
-             sonuclab2.setText(kazanan());
-         }else
-             sonuclab.setText("Tüm Oyuncuların Altini Bittiği için Oyun Bitti !!");
-         
+        
         PlayerA.setGidilenYollar(PlayerA.getEndPoint());
         PlayerB.setGidilenYollar(PlayerB.getEndPoint());
         PlayerC.setGidilenYollar(PlayerC.getEndPoint());
@@ -587,38 +498,27 @@ public class Board extends JFrame implements ActionListener {
         
         System.out.println("A'NIN ALTIN SAYISI : "+PlayerA.getAltinMiktari()+"\nB'NIN ALTIN SAYISI : "+PlayerB.getAltinMiktari()+"\nC'NIN ALTIN SAYISI : "+PlayerC.getAltinMiktari()+"\nD'NIN ALTIN SAYISI : "+PlayerD.getAltinMiktari());
         
-        
-       
         }
         
-       
-        
-        
     }
-     public boolean kontrol(Point endA,Point endB,Point endC,Point endD){
-         boolean donus = true;
+    
+    
+    public boolean kontrol(Point endA,Point endB,Point endC,Point endD){
+        boolean donus = true;
+            if(mesafe(PlayerD.getStartPoint(),endA) > mesafe(PlayerA.getStartPoint(),endA))
+                donus = false;
+            if(mesafe(PlayerD.getStartPoint(),endB) > mesafe(PlayerB.getStartPoint(),endB))
+                donus = false;
+            if(mesafe(PlayerD.getStartPoint(),endC) > mesafe(PlayerC.getStartPoint(),endC))
+                donus = false;
+                
          
-                if(mesafe(PlayerD.getStartPoint(),endA) > mesafe(PlayerA.getStartPoint(),endA)){
-                    
-                     donus = false;
-                }
-           
-                if(mesafe(PlayerD.getStartPoint(),endB) > mesafe(PlayerB.getStartPoint(),endB)){
-                    
-                    donus = false;
-                }
-            
-                if(mesafe(PlayerD.getStartPoint(),endC) > mesafe(PlayerC.getStartPoint(),endC)){ 
-                     
-                    donus = false;
-                }
-         
-               
-                  
-            
-          return donus;
+        return donus;
      }
+            
      public int mesafe(Point a,Point b){
         return  Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
+     
+     
 }

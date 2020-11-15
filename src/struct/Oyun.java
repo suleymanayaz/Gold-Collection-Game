@@ -24,7 +24,9 @@ import java.util.Random;
 
 
 public class Oyun {
-    public boolean gameover = false;
+
+   
+    public static boolean gameover = false;
     private int lines,cols,altinoran,galtinoran;
     private Node[][] grid;
     private final Point start = new Point(0,0);
@@ -38,7 +40,7 @@ public class Oyun {
         // buraya player a  b c d eklersin
         this.altinoran=altinoran;
         this.galtinoran=galtinoran;
-        checkPoint(start);
+      
         // hepsi için yapması 
         initGrid();
         // oyuncuların altına altin ve gizli altin geliyor onu ayalra.
@@ -46,16 +48,7 @@ public class Oyun {
         
     }
     
-    private void checkPoint(Point p){
-        if (p.x < 0)
-            p.x = 0;
-        if (p.y < 0)
-            p.y = 0;
-        if (p.x >= lines)
-            p.x = lines - 1;
-        if (p.y >= cols)
-            p.y = cols - 1;
-    }
+ 
     
     private void initGrid(){
         for(int i = 0;i<lines;i++){
@@ -120,15 +113,6 @@ public class Oyun {
     }
     
     
-  /*
-        public void calculateWight(){
-            for(int i = 0;i<lines;i++){
-                for(int j= 0 ;j < cols;j++){
-                    if()
-                }
-            }
-        }
-    */
     
      public int mesafe(Point a,Point b){
         return  Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
@@ -174,45 +158,5 @@ public class Oyun {
         return new Point(getLines()-1,0);
     }
     
-    /*
-    
-    public Point getPlayerA(){
-    return playerA
-    }
-    HEPSİ İCİN YAPICAKSIN
-    */
-    
-    public ArrayList<Node> getNeighbors(Point current,Point end){
-        Node up = null,down = null,left = null,right = null;
-        ArrayList<Node> neighbors = new ArrayList<Node>();
-        
-        if(current.x-1 >=0)
-            up = getNode(new Point(current.x-1,current.y));
-        if (current.x + 1 < lines)
-            down = getNode(new Point(current.x + 1, current.y));
-
-        if (current.y - 1 >= 0)
-            left = getNode(new Point(current.x, current.y - 1));
-        if (current.y + 1 < cols)
-            right = getNode(new Point(current.x, current.y + 1));
-        
-        // asagıdaki kodda ust alt sag sol dan gidince varacagı hedef 
-        if (up!=null)
-            if(mesafe(up.p,end)< 3)
-            neighbors.add(up);
-        if (down !=null)
-            if(mesafe(down.p,end) < 3)
-            neighbors.add(down);
-        if (left !=null)
-            if(mesafe(left.p,end)< 3)
-            neighbors.add(left);
-        if (right != null)
-            if(mesafe(right.p,end)< 3 )
-            neighbors.add(right);
-
-        return neighbors;
-    }
-    
+  
 }
-
-

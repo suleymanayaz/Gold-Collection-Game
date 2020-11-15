@@ -8,7 +8,6 @@ package Oyuncular;
 import java.awt.Point;
 import java.util.ArrayList;
 import struct.*;
-
 import java.util.Random;
 
 /**
@@ -21,9 +20,9 @@ public class playerB extends Player {
      private Point start,end,current,last;
      ArrayList<Point> playeragittigiyollar = new ArrayList<>();
      ArrayList<Point> yollar,neig,neighbors;
-    
+
     public playerB(Point start){
-            this.start = start;
+         this.start = start;
          this.hedefvar = true;
          this.gameoverB = false;
          this.toplamAdim = 0;
@@ -39,64 +38,83 @@ public class playerB extends Player {
     public Point getEndPoint(){
         return this.end;
     }
+    @Override
      public void setAdimSayisi(int adim){
         this.adimSayisi = adim;
     }
+     @Override
     public int getAdimSayisi (){
         return this.adimSayisi;
     }
-    public void setStartplayerA(Point start){
+    @Override
+    public void setStartPoint(Point start){
         this.start = start;
     }
+    
     public ArrayList<Point> getListe(){
         return yollar;
     }
-    
-      public void setHedefAldi(boolean aldi){
-          this.hedefvar = aldi;
-      }
-   public boolean getHedef(){
-       return this.hedefvar;
-   }
-     public int getHamleMaliyet(){
-         return this.hamleMaliyet;
-     }
-     public void setHamleMaliyet(int maliyet){
-         this.hamleMaliyet = maliyet;
-     }
-     public int getHedefBerlirlemeMaliyet(){
-         return this.hedefBelirlemeMaliyet;
-     }
+    @Override
+    public void setHedefAldi(boolean aldi){
+         this.hedefvar = aldi;
+    }
+    @Override
+    public boolean getHedef(){
+        return this.hedefvar;
+    }
+    @Override
+    public int getHamleMaliyet(){
+        return this.hamleMaliyet;
+    }
+    @Override
+    public void setHamleMaliyet(int maliyet){
+        this.hamleMaliyet = maliyet;
+    }
+    @Override
+    public int getHedefBerlirlemeMaliyet(){
+        return this.hedefBelirlemeMaliyet;
+    }
+    @Override
      public void setHedefBelirlemeMaliyet(int maliyet){
-         this.hedefBelirlemeMaliyet = maliyet;
-     }
+        this.hedefBelirlemeMaliyet = maliyet;
+    }
+    @Override
     public void setToplamAdim(int adim){
         this.toplamAdim = adim;
     }
+    @Override
     public int getToplamAdim(){
         return this.toplamAdim;
     }
-       public void setAltinMiktari(int altinmiktari){
+    @Override
+    public void setAltinMiktari(int altinmiktari){
         this.altinmiktari = altinmiktari;
     }
+    @Override
     public int getAltinMiktari(){
         return this.altinmiktari;
     }
+    @Override
     public void setHarcananAltinMiktari(int miktar){
         this.harcananAltinMiktari = miktar;
     }
+    @Override
     public int getHarcananAltinMiktari(){
         return this.harcananAltinMiktari;
     }
-       public int getToplananAltinMiktari(){
+    @Override
+    public int getToplananAltinMiktari(){
         return this.toplananAltinMiktari;
     }
+    @Override
     public void setToplananAltinMiktari(int toplananAltinMiktari){
         this.toplananAltinMiktari = toplananAltinMiktari;
     }
-     public void setGidilenYollar(Point n){
+    @Override
+    public void setGidilenYollar(Point n){
         this.playeragittigiyollar.add(n);
     }
+    @Override
     public ArrayList<Point> getGidilenYollar(){
         return this.playeragittigiyollar;
     }
@@ -105,16 +123,10 @@ public class playerB extends Player {
        Point altin = new Point();
        ArrayList<Point> enyakinaltinlar = new ArrayList<>();
        end = new Point();
-       
-       int lastMesafe = 0;
-       int newMesafe = 0;
-       int hesapaltinmiktari = 0;
-       float kar1 = 0;
-       float kar = 0;
-       int hamle = 5;
-       float hesap=0;
- 
       
+       int lastMesafe = 0,newMesafe = 0,hesapaltinmiktari=0,hamle = 5;
+       float kar1 = 0.f,kar=0.f,hesap = 0.f;
+
        if(hedefvar && ((altinmiktari-hedefBelirlemeMaliyet) >= 0) ){
            for(int i = 0;i<oyun.getLines();i++){
                 for(int j=0;j<oyun.getCols();j++){
@@ -128,10 +140,7 @@ public class playerB extends Player {
                          }else{
                               hesap = (newMesafe/(float)getAdimSayisi())*hamle;
                          }
-  
                          kar  = hesapaltinmiktari-hesap;
-                         
-                         
                          if(kar1==0.f){
                              kar1 = kar;
                              end.x= altin.x;end.y=altin.y;
@@ -145,35 +154,29 @@ public class playerB extends Player {
                          
                          
                     }
-                 }
-          }
-         if(end.x==0&&end.y==0){
-             end = getStartPoint();
-             altinbitti = true;
-         }
-         if(!altinbitti){
-              setHarcananAltinMiktari(getHarcananAltinMiktari()+hedefBelirlemeMaliyet);
-              altinmiktari = altinmiktari-hedefBelirlemeMaliyet;
-         }
-             
-         
-
-       }else{
+                }
+            }
+            if(end.x==0&&end.y==0){
+                end = getStartPoint();
+                gameoverB = true;
+            }
+            if(!gameoverB){
+                setHarcananAltinMiktari(getHarcananAltinMiktari()+hedefBelirlemeMaliyet);
+                altinmiktari = altinmiktari-hedefBelirlemeMaliyet;
+            }
+        }else{
            if(altinmiktari-hedefBelirlemeMaliyet < 0){
                 end = getStartPoint();
-               System.out.println("Parası bitti B hedef belirleyemiyor .");
+                System.out.println("Parası bitti B hedef belirleyemiyor .");
                 gameoverB =true;
            }
-       }
-      
-           
-       
-     
+        }
+
    }
     
     
    
-    public void yollarıbul(Point start,Point end){
+    public void yollarıbul(Point start,Point end,Oyun oyun){
         Random rn = new Random();
         yollar = new ArrayList<>();
         current = start;last=end;
@@ -182,33 +185,25 @@ public class playerB extends Player {
         int hareket = getAdimSayisi();
         neig = new ArrayList<>();
         if(mesafe(current,last)<=getAdimSayisi()){
-        while(!current.equals(end)){
-           
-            neig = komsular3(current,hareket);
-        
-               for(Point n : neig){
-                    if(rn.nextBoolean()){
-                       if(!yollar.contains(n)){
-                           yollar.add(n);
-                           current = n;
-                           hareket--;
-                           break;
-                       }
+            while(!current.equals(end)){
+                neig = komsular3(current,hareket,oyun);
+                    for(Point n : neig){
+                        if(rn.nextBoolean()){
+                            if(!yollar.contains(n)){
+                                yollar.add(n);
+                                current = n;
+                                hareket--;
+                                break;
+                            }    
+                        }
                     }
-               }
-         
-           
-
+            }
+            setHedefAldi(true);
         }
-        setHedefAldi(true);
-        }
-        
         else{
             hareket = getAdimSayisi();
             while(hareket != 0){
-            
-                  neig = komsular(current,hareket);
-        
+               neig = komsular(current,hareket,oyun);
                for(Point n : neig){
                     if(rn.nextBoolean()){
                        if(!yollar.contains(n) ){
@@ -220,83 +215,61 @@ public class playerB extends Player {
                     }
                }
             }
-         setHedefAldi(false);
+            setHedefAldi(false);
         }
          
     }
     
     
-    public ArrayList<Point> komsular(Point current,int hareket){
+    public ArrayList<Point> komsular(Point current,int hareket,Oyun oyun){
         Point up = null,down = null,left = null,right = null;
         neighbors = new ArrayList<>();
         if(current.x-1 >=0)
             up = new Point(current.x-1,current.y);
-        if (current.x + 1 < 20)
+        if (current.x + 1 < oyun.getLines())
             down = new Point(current.x + 1, current.y);
 
         if (current.y - 1 >= 0)
             left = new Point(current.x, current.y - 1);
-        if (current.y + 1 < 20)
+        if (current.y + 1 < oyun.getCols())
             right = new Point(current.x, current.y + 1);
-        
-       
-        // asagıdaki kodda ust alt sag sol dan gidince varacagı hedef 
+
         if (up!=null){
                 if(mesafe(up,end) < mesafe(current,end) ){
                      neighbors.add(up);
-                
-           }
-
+                }
         }
         if (down !=null){
-           
                if(mesafe(down,end) < mesafe(current,end) ){
                     neighbors.add(down);
-
                }
-                
         }
         if (left !=null){
-        
              if(mesafe(left,end) < mesafe(current,end) ){
                    neighbors.add(left);
              }
-         
-              
-          
         }
-            
         if (right != null){
-          
-                if(mesafe(right,end) < mesafe(current,end) ){
-                    neighbors.add(right);
-                }
-            
-                 
-                  
-          
+            if(mesafe(right,end) < mesafe(current,end) ){
+                neighbors.add(right);
+            }
         }
-      
-        
-            
-
         return neighbors;
     }
    
-     public ArrayList<Point> komsular3(Point current,int hareket){
-         Point up = null,down = null,left = null,right = null;
+     public ArrayList<Point> komsular3(Point current,int hareket,Oyun oyun){
+        Point up = null,down = null,left = null,right = null;
         neighbors = new ArrayList<>();
         if(current.x-1 >=0)
             up = new Point(current.x-1,current.y);
-        if (current.x + 1 < 20)
+        if (current.x + 1 < oyun.getLines())
             down = new Point(current.x + 1, current.y);
 
         if (current.y - 1 >= 0)
             left = new Point(current.x, current.y - 1);
-        if (current.y + 1 < 20)
+        if (current.y + 1 < oyun.getCols())
             right = new Point(current.x, current.y + 1);
         
-        // asagıdaki kodda ust alt sag sol dan gidince varacagı hedef 
         if (up!=null){
            if(mesafe(up,end) < hareket )
             neighbors.add(up);
@@ -340,15 +313,8 @@ public class playerB extends Player {
             }
 
         }
-        
-        
-
-        
-            
 
         return neighbors;
     }
 
-
-   
 }
