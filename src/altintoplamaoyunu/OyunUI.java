@@ -24,7 +24,7 @@ public class OyunUI extends JPanel  {
     private Node currentNode;
     playerA oyuncuA;
     Color dbg;
-    public JLabel altin,galtin,playerA,playerB,playerC,playerD;
+    public JLabel goldLabel,playerALabel,playerBLabel,playerCLabel,playerDLabel;
  
     
     public OyunUI(Oyun oyun){
@@ -56,31 +56,31 @@ public class OyunUI extends JPanel  {
                 gbc.gridy = i; // anlamadım
                 setBackground(dbg);
                 if(oyun.getGrid()[i][j].p.equals(oyun.getStart())){
-                    playerA = new JLabel();
-                    playerA.setText("A");
-                    grid[i][j].add(playerA);
+                    playerALabel = new JLabel();
+                    playerALabel.setText("A");
+                    grid[i][j].add(playerALabel);
                  
                 }
                 else if (oyun.getGrid()[i][j].p.equals(oyun.getStartB())){
-                    playerB = new JLabel();
-                    playerB.setText("B");
-                    grid[i][j].add(playerB);
+                    playerBLabel = new JLabel();
+                    playerBLabel.setText("B");
+                    grid[i][j].add(playerBLabel);
                 }
                 else if (oyun.getGrid()[i][j].p.equals(oyun.getStartC())){
-                    playerC = new JLabel();
-                    playerC.setText("C");
-                    grid[i][j].add(playerC);
+                    playerCLabel = new JLabel();
+                    playerCLabel.setText("C");
+                    grid[i][j].add(playerCLabel);
                 }
                 else if (oyun.getGrid()[i][j].p.equals(oyun.getStartD())){
-                    playerD = new JLabel();
-                    playerD.setText("D");
-                    grid[i][j].add(playerD);
+                    playerDLabel = new JLabel();
+                    playerDLabel.setText("D");
+                    grid[i][j].add(playerDLabel);
                 }
                 
                 else if (oyun.getGrid()[i][j].isAltin() && (oyun.getGrid()[i][j].p.equals(oyun.getStart()) == false)){
-                    altin = new JLabel();
-                    altin.setText(Integer.toString(oyun.getGrid()[i][j].isAltinMiktari()));
-                    grid[i][j].add(altin);
+                    goldLabel = new JLabel();
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[i][j].isAltinMiktari()));
+                    grid[i][j].add(goldLabel);
                 }
                 else if (oyun.getGrid()[i][j].isGAltin()){
                     //grid[i][j].setBackground(Color.YELLOW);
@@ -122,11 +122,11 @@ public class OyunUI extends JPanel  {
         Point start = new Point();
         start = player.getStartPoint();
         Point end  = new Point();
-        grid[start.x][start.y].remove(playerA);
+        grid[start.x][start.y].remove(playerALabel);
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerA); // ilk hareketi yaparken kendini gösteriyor
+            grid[n.x][n.y].add(playerALabel); // ilk hareketi yaparken kendini gösteriyor
             grid[n.x][n.y].setBackground(Color.BLUE); // araksını mavi yapıyor
             this.paintAll(getGraphics());
             try {
@@ -143,9 +143,9 @@ public class OyunUI extends JPanel  {
                 }
                 else{
                     oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
-                    altin = new JLabel();
-                    altin.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
-                    grid[n.x][n.y].add(altin);
+                    goldLabel = new JLabel();
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    grid[n.x][n.y].add(goldLabel);
                 }
     
             }  
@@ -163,7 +163,7 @@ public class OyunUI extends JPanel  {
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
         // grid[end.x][end.y].add(playerA); // en son kaldıgı yere kendini yazdir
-        grid[end.x][end.y].add(playerA);
+        grid[end.x][end.y].add(playerALabel);
         player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
 
@@ -190,11 +190,11 @@ public void hareketB (playerB player){
         Point start = new Point();
         start = player.getStartPoint();
         Point end  = new Point();
-        grid[start.x][start.y].remove(playerB);
+        grid[start.x][start.y].remove(playerBLabel);
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerB); // ilk hareketi yaparken kendini gösteriyor
+            grid[n.x][n.y].add(playerBLabel); // ilk hareketi yaparken kendini gösteriyor
             grid[n.x][n.y].setBackground(Color.RED); // araksını mavi yapıyor
             this.paintAll(getGraphics());
             try {
@@ -211,9 +211,9 @@ public void hareketB (playerB player){
                 }
                 else{
                     oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
-                    altin = new JLabel();
-                    altin.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
-                    grid[n.x][n.y].add(altin);
+                    goldLabel = new JLabel();
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    grid[n.x][n.y].add(goldLabel);
                 }
 
             } 
@@ -225,12 +225,12 @@ public void hareketB (playerB player){
                 grid[n.x][n.y].removeAll(); // panelden sil
             }    
             grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerB); // kendini sil 
+            grid[n.x][n.y].remove(playerBLabel); // kendini sil 
             end = n;
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerB); // en son kaldıgı yere kendini yazdir
+        grid[end.x][end.y].add(playerBLabel); // en son kaldıgı yere kendini yazdir
         player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     
@@ -253,11 +253,11 @@ public void hareketC (playerC player){
         Point start = new Point();
         start = player.getStartPoint();
         Point end  = new Point();
-        grid[start.x][start.y].remove(playerC);
+        grid[start.x][start.y].remove(playerCLabel);
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerC); // ilk hareketi yaparken kendini gösteriyor
+            grid[n.x][n.y].add(playerCLabel); // ilk hareketi yaparken kendini gösteriyor
             grid[n.x][n.y].setBackground(Color.ORANGE); // araksını mavi yapıyor
             this.paintAll(getGraphics());
             try {
@@ -274,9 +274,9 @@ public void hareketC (playerC player){
                 }
                 else{
                     oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
-                    altin = new JLabel();
-                    altin.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
-                    grid[n.x][n.y].add(altin);
+                    goldLabel = new JLabel();
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    grid[n.x][n.y].add(goldLabel);
                 }
             }
                    
@@ -288,13 +288,13 @@ public void hareketC (playerC player){
                 grid[n.x][n.y].removeAll(); // panelden sil
             }    
             grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerC); // kendini sil 
+            grid[n.x][n.y].remove(playerCLabel); // kendini sil 
             end = n;
                    
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerC); // en son kaldıgı yere kendini yazdir
+        grid[end.x][end.y].add(playerCLabel); // en son kaldıgı yere kendini yazdir
         player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     }
@@ -316,11 +316,11 @@ public void hareketD (playerD player){
        Point start = new Point();
        start = player.getStartPoint();
        Point end  = new Point();
-       grid[start.x][start.y].remove(playerD);
+       grid[start.x][start.y].remove(playerDLabel);
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerD); // ilk hareketi yaparken kendini gösteriyor
+            grid[n.x][n.y].add(playerDLabel); // ilk hareketi yaparken kendini gösteriyor
             grid[n.x][n.y].setBackground(Color.YELLOW); // araksını mavi yapıyor
             this.paintAll(getGraphics());
             try {
@@ -337,9 +337,9 @@ public void hareketD (playerD player){
                 }
                 else{
                     oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
-                    altin = new JLabel();
-                    altin.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
-                    grid[n.x][n.y].add(altin);
+                    goldLabel = new JLabel();
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    grid[n.x][n.y].add(goldLabel);
                 }
             }
             if(oyun.getGrid()[n.x][n.y].isAltin()){  // eger gectiği yerde altın varsa
@@ -350,12 +350,12 @@ public void hareketD (playerD player){
                 grid[n.x][n.y].removeAll(); // panelden sil
             }    
             grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerD); // kendini sil 
+            grid[n.x][n.y].remove(playerDLabel); // kendini sil 
             end = n;
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerD); // en son kaldıgı yere kendini yazdir
+        grid[end.x][end.y].add(playerDLabel); // en son kaldıgı yere kendini yazdir
         player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     }
