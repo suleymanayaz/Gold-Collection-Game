@@ -10,7 +10,6 @@ import java.io.*;
 import java.text.NumberFormat;
 import struct.*;
 
-    // StepsNumber   TargetCost moveCost InitGoldMount
 public class Board extends JFrame implements ActionListener {
     int boardx = 20,boardy=20,goldenRatio=20,hiddenGoldenRatio=10;
     JPanel game,settings,generate,result,results,players;
@@ -72,15 +71,15 @@ public class Board extends JFrame implements ActionListener {
     public void fileWrite(Player player){
         try{
             FileWriter fw = new FileWriter(file);
-            fw.write("\n:"+player.getToplamAdim()+"\r\n");
+            fw.write("\n:"+player.getStepsNumber()+"\r\n");
             fw.write("Player passes : { ");
-            for(Point n : player.getGidilenYollar()){
+            for(Point n : player.getPlayerPassedRotaArrayList()){
                 fw.write("("+n.x+","+n.y+") ");
             }
             fw.write("}"+"\r\n");
-            fw.write("Total number of steps:"+player.getToplananAltinMiktari()+"\r\n");
-            fw.write("Amount of gold  spent:"+player.getHarcananAltinMiktari()+"\r\n");
-            fw.write("amount of gold in the case"+(player.getAltinMiktari()+"\r\n"));
+            fw.write("Total number of steps:"+player.getAmountGoldCollected()+"\r\n");
+            fw.write("Amount of gold  spent:"+player.getGoldAmountSpent()+"\r\n");
+            fw.write("amount of gold in the case"+(player.getGoldAmount()+"\r\n"));
             fw.close();
         }catch(IOException e){
             System.out.println("While File writing , Uppss File IOexception ");
@@ -172,15 +171,15 @@ public class Board extends JFrame implements ActionListener {
         playerBtargetCost.setValue(10L);
         playerBtargetCost.setPreferredSize(playerSettingsButton.getPreferredSize());
         playerNameLabel = new JLabel("B :");
-        playerTargetCostLabel = new JLabel("Target Amount");
+        playerTargetCostLabel = new JLabel("Target Cost");
         playerBmoveCost =  new JFormattedTextField(NumberFormat.getNumberInstance());
         playerBmoveCost.setValue(5L);
         playerBmoveCost.setPreferredSize(playerSettingsButton.getPreferredSize());
-        playerMoveCostLabel = new JLabel("Move Amount");
+        playerMoveCostLabel = new JLabel("Move Cost");
         playerBinitGoldMount =new JFormattedTextField(NumberFormat.getNumberInstance());
         playerBinitGoldMount.setValue(200L);
         playerBinitGoldMount.setPreferredSize(playerSettingsButton.getPreferredSize());
-         playerinitGoldMountLabel = new JLabel("Gold Mount:");
+         playerinitGoldMountLabel = new JLabel("Gold Amount:");
         JPanel playerBpanel = new JPanel();
         playerBpanel.setLayout(new FlowLayout());
         playerBpanel.add(playerNameLabel);
@@ -282,25 +281,25 @@ public class Board extends JFrame implements ActionListener {
     
     
     public String getWinnterString (){
-        if(PlayerA.getAltinMiktari()>PlayerB.getAltinMiktari() && PlayerA.getAltinMiktari()>PlayerC.getAltinMiktari() && PlayerA.getAltinMiktari()> PlayerD.getAltinMiktari() )
+        if(PlayerA.getGoldAmount()>PlayerB.getGoldAmount() && PlayerA.getGoldAmount()>PlayerC.getGoldAmount() && PlayerA.getGoldAmount()> PlayerD.getGoldAmount() )
             return "Player A  of Game Winner";
-        else if (PlayerB.getAltinMiktari()>PlayerA.getAltinMiktari() && PlayerB.getAltinMiktari()>PlayerC.getAltinMiktari() && PlayerB.getAltinMiktari() > PlayerD.getAltinMiktari())
+        else if (PlayerB.getGoldAmount()>PlayerA.getGoldAmount() && PlayerB.getGoldAmount()>PlayerC.getGoldAmount() && PlayerB.getGoldAmount() > PlayerD.getGoldAmount())
              return "Player B  of Game Winner";
-        else if (PlayerC.getAltinMiktari()>PlayerA.getAltinMiktari() && PlayerC.getAltinMiktari()>PlayerB.getAltinMiktari() && PlayerC.getAltinMiktari() > PlayerD.getAltinMiktari())
+        else if (PlayerC.getGoldAmount()>PlayerA.getGoldAmount() && PlayerC.getGoldAmount()>PlayerB.getGoldAmount() && PlayerC.getGoldAmount() > PlayerD.getGoldAmount())
              return "Player C  of Game Winner";
-        else if  (PlayerD.getAltinMiktari() > PlayerA.getAltinMiktari() && PlayerD.getAltinMiktari() > PlayerB.getAltinMiktari() && PlayerD.getAltinMiktari() > PlayerC.getAltinMiktari())
+        else if  (PlayerD.getGoldAmount() > PlayerA.getGoldAmount() && PlayerD.getGoldAmount() > PlayerB.getGoldAmount() && PlayerD.getGoldAmount() > PlayerC.getGoldAmount())
             return "Player D  of Game Winner";
-        else if(PlayerA.getAltinMiktari()== PlayerB.getAltinMiktari() && PlayerA.getAltinMiktari()>PlayerC.getAltinMiktari() && PlayerA.getAltinMiktari()>PlayerD.getAltinMiktari())
+        else if(PlayerA.getGoldAmount()== PlayerB.getGoldAmount() && PlayerA.getGoldAmount()>PlayerC.getGoldAmount() && PlayerA.getGoldAmount()>PlayerD.getGoldAmount())
             return "Player A and Player B of Game Winner";
-        else if(PlayerB.getAltinMiktari()== PlayerC.getAltinMiktari() && PlayerB.getAltinMiktari()>PlayerA.getAltinMiktari() && PlayerB.getAltinMiktari()> PlayerD.getAltinMiktari())
+        else if(PlayerB.getGoldAmount()== PlayerC.getGoldAmount() && PlayerB.getGoldAmount()>PlayerA.getGoldAmount() && PlayerB.getGoldAmount()> PlayerD.getGoldAmount())
             return "Player B and Player C of Game Winner";
-        else if(PlayerC.getAltinMiktari()== PlayerA.getAltinMiktari() && PlayerC.getAltinMiktari()>PlayerB.getAltinMiktari()&& PlayerC.getAltinMiktari()> PlayerD.getAltinMiktari())
+        else if(PlayerC.getGoldAmount()== PlayerA.getGoldAmount() && PlayerC.getGoldAmount()>PlayerB.getGoldAmount()&& PlayerC.getGoldAmount()> PlayerD.getGoldAmount())
             return "Player A and Player C of Game Winner";
-        else if (PlayerD.getAltinMiktari() == PlayerA.getAltinMiktari() && PlayerD.getAltinMiktari()>PlayerC.getAltinMiktari() && PlayerD.getAltinMiktari()> PlayerB.getAltinMiktari())
+        else if (PlayerD.getGoldAmount() == PlayerA.getGoldAmount() && PlayerD.getGoldAmount()>PlayerC.getGoldAmount() && PlayerD.getGoldAmount()> PlayerB.getGoldAmount())
             return "Player A and Player D of Game Winner";
-        else if (PlayerD.getAltinMiktari() == PlayerB.getAltinMiktari() && PlayerD.getAltinMiktari()>PlayerC.getAltinMiktari() && PlayerD.getAltinMiktari()> PlayerA.getAltinMiktari())
+        else if (PlayerD.getGoldAmount() == PlayerB.getGoldAmount() && PlayerD.getGoldAmount()>PlayerC.getGoldAmount() && PlayerD.getGoldAmount()> PlayerA.getGoldAmount())
             return "Player B and Player D of Game Winner";
-        else if (PlayerD.getAltinMiktari() == PlayerC.getAltinMiktari() && PlayerD.getAltinMiktari()>PlayerA.getAltinMiktari() && PlayerD.getAltinMiktari()> PlayerB.getAltinMiktari())
+        else if (PlayerD.getGoldAmount() == PlayerC.getGoldAmount() && PlayerD.getGoldAmount()>PlayerA.getGoldAmount() && PlayerD.getGoldAmount()> PlayerB.getGoldAmount())
             return "Player C and Player D of Game Winner";
         else
             return "There is no winner, They all have the same amount of gold .";
@@ -371,77 +370,82 @@ public class Board extends JFrame implements ActionListener {
             Long dAltinMiktari = (Long) playerDinitGoldMount.getValue();
             Long stepsNumber = (Long) playerStepsNumber.getValue();
             
-            PlayerA.setHedefBelirlemeMaliyet(ahedefmaliyet.intValue());
-            PlayerA.setHamleMaliyet(ahamlemaliyet.intValue());
-            PlayerA.setAltinMiktari(aAltinMiktari.intValue());
-            PlayerB.setHedefBelirlemeMaliyet(bhedefmaliyet.intValue());
-            PlayerB.setHamleMaliyet(bhamlemaliyet.intValue());
-            PlayerB.setAltinMiktari(bAltinMiktari.intValue());
-            PlayerC.setHedefBelirlemeMaliyet(chedefmaliyet.intValue());
-            PlayerC.setHamleMaliyet(chamlemaliyet.intValue());
-            PlayerC.setAltinMiktari(cAltinMiktari.intValue());
-            PlayerD.setHedefBelirlemeMaliyet(dhedefmaliyet.intValue());
-            PlayerD.setHamleMaliyet(dhamlemaliyet.intValue());
-            PlayerD.setAltinMiktari(dAltinMiktari.intValue());
+            PlayerA.setTargetCost(ahedefmaliyet.intValue());
+            PlayerA.setMoveCost(ahamlemaliyet.intValue());
+            PlayerA.setGoldAmount(aAltinMiktari.intValue());
+            PlayerB.setGoldAmountSpent(bhedefmaliyet.intValue());
+            PlayerB.setMoveCost(bhamlemaliyet.intValue());
+            PlayerB.setGoldAmount(bAltinMiktari.intValue());
+            PlayerC.setTargetCost(chedefmaliyet.intValue());
+            PlayerC.setMoveCost(chamlemaliyet.intValue());
+            PlayerC.setGoldAmount(cAltinMiktari.intValue());
+            PlayerD.setTargetCost(dhedefmaliyet.intValue());
+            PlayerD.setMoveCost(dhamlemaliyet.intValue());
+            PlayerD.setGoldAmount(dAltinMiktari.intValue());
             
-            PlayerA.setAdimSayisi(stepsNumber.intValue());
-            PlayerB.setAdimSayisi(stepsNumber.intValue());
-            PlayerC.setAdimSayisi(stepsNumber.intValue());
-            PlayerD.setAdimSayisi(stepsNumber.intValue());
+            PlayerA.setStepsNumber(stepsNumber.intValue());
+            
+    
+            
+            PlayerB.setStepsNumber(stepsNumber.intValue());
+            PlayerC.setStepsNumber(stepsNumber.intValue());
+            PlayerD.setStepsNumber(stepsNumber.intValue());
             
         }
         if(source == gameStartButton){
             while(!gameBoard.gameover){
-           
                game.revalidate();
                game.repaint();
-               if(!(PlayerA.gameoverA)){
+               if(!(PlayerA.isHaveGoldBool())){
+                  
                   PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint(),gameBoard);
-               if(gameBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isGold())
+               if(gameBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isGold()){
                     gameUI.hareketA(PlayerA);
-               else{
-                    PlayerA.setHedefAldi(true);
+               }else{
+                    PlayerA.setHaveTarget(true);
                     PlayerA.hedefBelirle(gameBoard);
                     PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint(),gameBoard);
                     gameUI.hareketA(PlayerA);  
                 }
             
-               if(PlayerA.getHedef()){
+               if(PlayerA.getHaveTarget()){
                     PlayerA.hedefBelirle(gameBoard);
                 }
                else
                     System.out.println("A oyuncu Hedef Alınmadı Devam Ediyor!!");
-                }
+                }else{
+                   System.out.println("düştüü.");
+               }
                
                
-               if(!(PlayerB.gameoverB)  ){
+               if(!(PlayerB.isHaveGoldBool())  ){
                     PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint(),gameBoard);
                if(gameBoard.getGrid()[PlayerB.getEndPoint().x][PlayerB.getEndPoint().y].isGold())
                     gameUI.hareketB(PlayerB);
               else{
-                    PlayerB.setHedefAldi(true);
+                    PlayerB.setHaveTarget(true);
                     PlayerB.hedefBelirle(gameBoard);
                     PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint(),gameBoard);
                     gameUI.hareketB(PlayerB);
                 }
-               if(PlayerB.getHedef())
+               if(PlayerB.getHaveTarget())
                     PlayerB.hedefBelirle(gameBoard);
                else
                     System.out.println("B oyuncu Hedef Alınmadı Devam Ediyor!!");
                 
                 }
              
-               if(!(PlayerC.gameoverC) ){
+               if(!(PlayerC.isHaveGoldBool()) ){
                      PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint(),gameBoard);
                if(gameBoard.getGrid()[PlayerC.getEndPoint().x][PlayerC.getEndPoint().y].isGold())
                     gameUI.hareketC(PlayerC);
               else{
-                    PlayerC.setHedefAldi(true);
+                    PlayerC.setHaveTarget(true);
                     PlayerC.hedefBelirle(gameBoard,gameUI);
                     PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint(),gameBoard);
                     gameUI.hareketC(PlayerC);
                 }
-               if(PlayerC.getHedef())
+               if(PlayerC.getHaveTarget())
                     PlayerC.hedefBelirle(gameBoard,gameUI);
               else
                    System.out.println("C oyuncu Hedef Alınmadı Devam Ediyor !!");
@@ -452,38 +456,40 @@ public class Board extends JFrame implements ActionListener {
                 Point endB = new Point(PlayerB.getEndPoint());
                 Point endC = new Point(PlayerC.getEndPoint());
                     
-               if(!(PlayerD.gameoverD) ){
-                   if(PlayerD.getHedef())
+               if(!(PlayerD.isHaveGoldBool()) ){
+                   if(PlayerD.getHaveTarget())
                         PlayerD.hedefBelirle(gameBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
                    else
                         System.out.println("D oyuncu Hedef Alınmadı Devam Ediyor !!");
+                  
                    PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint(),gameBoard);
                    Point endD = new Point(PlayerD.getEndPoint());
                    if(gameBoard.getGrid()[endD.x][endD.y].isGold() && checkFinish(endA,endB, endC, endD))
                         gameUI.hareketD(PlayerD);
                    else{
-                       PlayerD.setHedefAldi(true);
+                       PlayerD.setHaveTarget(true);
                        PlayerD.hedefBelirle(gameBoard,endA,PlayerA.getStartPoint(),endB,PlayerB.getStartPoint(),endC,PlayerC.getStartPoint());
                        PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint(),gameBoard);
                        gameUI.hareketD(PlayerD);
                     }
                }
                
-               if((PlayerB.gameoverB && PlayerA.gameoverA && PlayerC.gameoverC && PlayerD.gameoverD)){
+               if((PlayerB.isHaveGoldBool() && PlayerA.isHaveGoldBool()&& PlayerC.isHaveGoldBool() && PlayerD.isHaveGoldBool())){
                   break;
                 }
            
           
             }
-        if((PlayerB.gameoverB && PlayerA.gameoverA && PlayerC.gameoverC && PlayerD.gameoverD)){
+        if((PlayerB.isHaveGoldBool() && PlayerA.isHaveGoldBool() && PlayerC.isHaveGoldBool() && PlayerD.isHaveGoldBool())){
+            gameBoard.gameover = true;
             gameResultLabel.setText(" Game Over !!");
             winnerLabel.setText(getWinnterString ());
         }
         
-        PlayerA.setGidilenYollar(PlayerA.getEndPoint());
-        PlayerB.setGidilenYollar(PlayerB.getEndPoint());
-        PlayerC.setGidilenYollar(PlayerC.getEndPoint());
-        PlayerD.setGidilenYollar(PlayerD.getEndPoint());
+        PlayerA.setPlayerPassedRotaArrayList(PlayerA.getEndPoint());
+        PlayerB.setPlayerPassedRotaArrayList(PlayerB.getEndPoint());
+        PlayerC.setPlayerPassedRotaArrayList(PlayerC.getEndPoint());
+        PlayerD.setPlayerPassedRotaArrayList(PlayerD.getEndPoint());
         file = new File("C:\\Users\\AYAZ\\Documents\\NetBeansProjects\\AltinToplamaOyunu\\ResultA.txt");
         fileWrite(PlayerA);
         file = new File("C:\\Users\\AYAZ\\Documents\\NetBeansProjects\\AltinToplamaOyunu\\ResultB.txt");
@@ -493,7 +499,7 @@ public class Board extends JFrame implements ActionListener {
         file = new File("C:\\Users\\AYAZ\\Documents\\NetBeansProjects\\AltinToplamaOyunu\\ResultD.txt");
         fileWrite(PlayerD);
         
-        System.out.println("A'NIN ALTIN SAYISI : "+PlayerA.getAltinMiktari()+"\nB'NIN ALTIN SAYISI : "+PlayerB.getAltinMiktari()+"\nC'NIN ALTIN SAYISI : "+PlayerC.getAltinMiktari()+"\nD'NIN ALTIN SAYISI : "+PlayerD.getAltinMiktari());
+        System.out.println("A'NIN ALTIN SAYISI : "+PlayerA.getGoldAmount()+"\nB'NIN ALTIN SAYISI : "+PlayerB.getGoldAmount()+"\nC'NIN ALTIN SAYISI : "+PlayerC.getGoldAmount()+"\nD'NIN ALTIN SAYISI : "+PlayerD.getGoldAmount());
         
         }
         

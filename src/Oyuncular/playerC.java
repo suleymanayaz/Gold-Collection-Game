@@ -19,110 +19,95 @@ import struct.Oyun;
  */
 public class playerC extends Player{
     
-     private int hamleMaliyet = 5,hedefBelirlemeMaliyet = 15,altinmiktari = 200,toplamAdim,harcananAltinMiktari,toplananAltinMiktari,adimSayisi = 3;
-     public boolean hedefvar,gameoverC;
+     private int moveCost = 5,targetCost = 15,goldAmount = 200 ,goldAmountSpent,totalNumberSteps,amountGoldCollected,stepsNumber = 3;
+     private  boolean haveGoldBool ,haveTarget;
      private Point start,end,current,last;
-
-     ArrayList<Point> playeragittigiyollar = new ArrayList<>();
-     ArrayList<Point> yollar,neig,neighbors;
-     JLabel altintext;
+     private ArrayList<Point> playerPassedRotaArrayList = new ArrayList<>();
+     ArrayList<Point> ways,closeNeighbors,farNeighbors;
+     JLabel goldLabel;
      public playerC(Point start){
-        this.start = start;
-        this.hedefvar = true;
-        this.gameoverC = false;
-        this.toplamAdim = 0;
-        this.harcananAltinMiktari = 0;
-        this.toplananAltinMiktari = 0;
+         this.start = start;
+         this.haveTarget = true;
+         this.haveGoldBool = false;
+         this.totalNumberSteps = 0;
+         this.goldAmountSpent= 0;
+         this.amountGoldCollected = 0;
     }
-    @Override
+    public ArrayList<Point> getListe(){
+        return ways;
+    }
+    
+     @Override
     public Point getStartPoint(){
         return this.start;
     }
-    @Override
+     
     public Point getEndPoint(){
         return this.end;
     }
-    @Override
-    public void setAdimSayisi(int adim){
-        this.adimSayisi = adim;
+     @Override
+    public void setStepsNumber (int stepsNumber ){
+        this.stepsNumber  = stepsNumber ;
     }
-    @Override
-    public int getAdimSayisi (){
-        return this.adimSayisi;
+    public int getStepsNumber  (){
+        return this.stepsNumber ;
     }
-    @Override
     public void setStartPoint(Point start){
         this.start = start;
     }
-    public ArrayList<Point> getListe(){
-        return yollar;
+    
+    public int getMoveCost(){
+        return this.moveCost;
     }
-    @Override
-    public void setHedefAldi(boolean aldi){
-        this.hedefvar = aldi;
+    public void setMoveCost(int moveCost){
+        this.moveCost = moveCost;
     }
-    @Override
-    public boolean getHedef(){
-       return this.hedefvar;
+     public int getTargetCost(){
+        return this.targetCost;
     }
-    @Override
-    public int getHamleMaliyet(){
-        return this.hamleMaliyet;
+     public void setTargetCost(int targetCost){
+        this.targetCost = targetCost;
     }
-    @Override
-    public void setHamleMaliyet(int maliyet){
-        this.hamleMaliyet = maliyet;
+     public void setHaveTarget(boolean haveTarget){
+        this.haveTarget = haveTarget;
+     }
+    public boolean getHaveTarget(){
+       return this.haveTarget;
     }
-    @Override
-    public int getHedefBerlirlemeMaliyet(){
-        return this.hedefBelirlemeMaliyet;
+    public void setTotalNumberSteps(int totalNumberSteps){
+        this.totalNumberSteps = totalNumberSteps;
     }
-    @Override
-    public void setHedefBelirlemeMaliyet(int maliyet){
-        this.hedefBelirlemeMaliyet = maliyet;
+    public int getTotalNumberSteps(){
+        return this.totalNumberSteps;
     }
-    @Override
-    public void setAltinMiktari(int altinmiktari){
-        this.altinmiktari = altinmiktari;
+     public void setGoldAmountSpent(int goldAmountSpent){
+        this.goldAmountSpent = goldAmountSpent;
     }
-    @Override
-    public int getAltinMiktari(){
-        return this.altinmiktari;
+    public int getGoldAmountSpent(){
+        return this.goldAmountSpent;
     }
-    @Override
-    public void setToplamAdim(int adim){
-        this.toplamAdim = adim;
+    public void setGoldAmount(int goldAmount){
+        this.goldAmount = goldAmount;
     }
-    @Override
-    public int getToplamAdim(){
-        return this.toplamAdim;
-    }
-    @Override
-    public void setHarcananAltinMiktari(int miktar){
-        this.harcananAltinMiktari = miktar;
-    }
-    @Override
-    public int getHarcananAltinMiktari(){
-        return this.harcananAltinMiktari;
-    }
-    @Override
-    public int getToplananAltinMiktari(){
-       return this.toplananAltinMiktari;
-    }
-    @Override
-    public void setToplananAltinMiktari(int toplananAltinMiktari){
-        this.toplananAltinMiktari = toplananAltinMiktari;
-    }
-    @Override
-    public void setGidilenYollar(Point n){
-        this.playeragittigiyollar.add(n);
-    }
-    @Override
-    public ArrayList<Point> getGidilenYollar(){
-        return this.playeragittigiyollar;
+    public int getGoldAmount(){
+        return this.goldAmount;
     }
     
-   public void altinac(Oyun oyun,OyunUI oyunui){
+    public int getAmountGoldCollected(){
+        return this.amountGoldCollected;
+    }
+    public void setAmountGoldCollected(int amountGoldCollected){
+        this.amountGoldCollected = amountGoldCollected;
+    }
+    
+    public void setPlayerPassedRotaArrayList(Point n){
+        this.playerPassedRotaArrayList.add(n);
+    }
+    public ArrayList<Point> getPlayerPassedRotaArrayList(){
+        return this.playerPassedRotaArrayList;
+    }
+    
+    public void altinac(Oyun oyun,OyunUI oyunui){
        Point start = new Point(getStartPoint());
        Point galtin = new Point();
        int newMesafe = 0;
@@ -153,9 +138,9 @@ public class playerC extends Player{
 
        if(aaltin2.x!=0&&aaltin2.y!=0){
            oyun.getGrid()[aaltin2.x][aaltin2.y].setHiddenGoldenVisible(true);
-           altintext = new JLabel();
-           altintext.setText(Integer.toString(oyun.getGrid()[aaltin2.x][aaltin2.y].getHiddenGoldenAmount()));
-           oyunui.grid[aaltin2.x][aaltin2.y].add(altintext);
+           goldLabel = new JLabel();
+           goldLabel.setText(Integer.toString(oyun.getGrid()[aaltin2.x][aaltin2.y].getHiddenGoldenAmount()));
+           oyunui.grid[aaltin2.x][aaltin2.y].add(goldLabel);
        }     
        
        
@@ -184,7 +169,7 @@ public class playerC extends Player{
            altinac(oyun,oyunui);
            counter++;
        }
-       if(hedefvar && ((altinmiktari-hedefBelirlemeMaliyet) >= 0) ){
+       if(haveTarget&& ((goldAmount-targetCost) >= 0) ){
          
            for(int i = 0;i<oyun.getLines();i++){
                 for(int j=0;j<oyun.getCols();j++){
@@ -193,10 +178,10 @@ public class playerC extends Player{
                         hesapaltinmiktari = oyun.getGrid()[i][j].getGoldAmount();
                         newMesafe = mesafe(start,altin);
                         // üce kadar 5 maliyet  ucten sonra mesafe bolu uc carpı 5
-                        if(newMesafe <= getAdimSayisi() ){
-                               hesap = hamleMaliyet;
+                        if(newMesafe <= getStepsNumber() ){
+                               hesap = moveCost;
                         }else{
-                              hesap = (newMesafe/(float)getAdimSayisi())*hamleMaliyet;
+                              hesap = (newMesafe/(float)getStepsNumber())*moveCost;
                         }
                         kar  = hesapaltinmiktari-hesap;
                         if(kar1==0.f){
@@ -214,18 +199,18 @@ public class playerC extends Player{
             }
             if(end.x==0&&end.y==0){
                 end = getStartPoint();
-                gameoverC = true;
+                setHaveGoldBool(true);
             }
-            if(!gameoverC){
-                setHarcananAltinMiktari(getHarcananAltinMiktari()+hedefBelirlemeMaliyet);
-                altinmiktari = altinmiktari-hedefBelirlemeMaliyet;
+            if(!isHaveGoldBool()){
+                setGoldAmountSpent(getGoldAmountSpent()+targetCost);
+                goldAmount = goldAmount-targetCost;
             }
         }
         else{
-            if(altinmiktari-hedefBelirlemeMaliyet < 0){
+            if(goldAmount-targetCost < 0){
                end = getStartPoint();
-               System.out.println("Parası bitti C hedef belirleyemiyor .");
-               gameoverC =true;
+               System.out.println("Player C out of gold ....");
+               setHaveGoldBool(true);
             }
         }
 
@@ -235,18 +220,18 @@ public class playerC extends Player{
 
    public void yollarıbul(Point start,Point end,Oyun oyun){
         Random rn = new Random();
-        yollar = new ArrayList<>();
+        ways = new ArrayList<>();
         current = start;last=end;
-        yollar.add(current);
-        int hareket = getAdimSayisi();
-        neig = new ArrayList<>();
-        if(mesafe(current,last)<=getAdimSayisi()){
+        ways.add(current);
+        int hareket = getStepsNumber();
+        closeNeighbors = new ArrayList<>();
+        if(mesafe(current,last)<=getStepsNumber()){
             while(!current.equals(end)){
-                neig = komsular3(current,hareket,oyun);
-                for(Point n : neig){
+                closeNeighbors = komsular3(current,hareket,oyun);
+                for(Point n : closeNeighbors){
                     if(rn.nextBoolean()){
-                       if(!yollar.contains(n)){
-                           yollar.add(n);
+                       if(!ways.contains(n)){
+                           ways.add(n);
                            current = n;
                            hareket--;
                            break;
@@ -254,16 +239,16 @@ public class playerC extends Player{
                     }
                }
             }
-            setHedefAldi(true);
+            setHaveTarget(true);
         }
         else{
-            hareket = getAdimSayisi();
+            hareket = getStepsNumber();
             while(hareket != 0){
-                neig = komsular(current,hareket,oyun);
-                for(Point n : neig){
+                closeNeighbors = komsular(current,hareket,oyun);
+                for(Point n : closeNeighbors){
                     if(rn.nextBoolean()){
-                       if(!yollar.contains(n) ){
-                           yollar.add(n);
+                       if(!ways.contains(n) ){
+                           ways.add(n);
                            current = n;
                            hareket--;
                            break;
@@ -271,14 +256,14 @@ public class playerC extends Player{
                     }
                 }
             }
-            setHedefAldi(false);
+            setHaveTarget(false);
         } 
     }
     
     
     public ArrayList<Point> komsular(Point current,int hareket,Oyun oyun){
         Point up = null,down = null,left = null,right = null;
-        neighbors = new ArrayList<>();
+        farNeighbors = new ArrayList<>();
         if(current.x-1 >=0)
             up = new Point(current.x-1,current.y);
         if (current.x + 1 < oyun.getLines())
@@ -291,30 +276,30 @@ public class playerC extends Player{
         // asagıdaki kodda ust alt sag sol dan gidince varacagı hedef 
         if (up!=null){
                 if(mesafe(up,end) < mesafe(current,end) ){
-                     neighbors.add(up);
+                     farNeighbors.add(up);
            }
         }
         if (down !=null){
                if(mesafe(down,end) < mesafe(current,end) ){
-                    neighbors.add(down);
+                    farNeighbors.add(down);
                }
         }
         if (left !=null){
                 if(mesafe(left,end) < mesafe(current,end) ){
-                   neighbors.add(left);
+                   farNeighbors.add(left);
              }
         }
         if (right != null){
                 if(mesafe(right,end) < mesafe(current,end) ){
-                    neighbors.add(right);
+                    farNeighbors.add(right);
                 }
         }
-        return neighbors;
+        return farNeighbors;
     }
    
      public ArrayList<Point> komsular3(Point current,int hareket,Oyun oyun){
          Point up = null,down = null,left = null,right = null;
-        neighbors = new ArrayList<>();
+        farNeighbors = new ArrayList<>();
         if(current.x-1 >=0)
             up = new Point(current.x-1,current.y);
         if (current.x + 1 < oyun.getLines())
@@ -327,42 +312,42 @@ public class playerC extends Player{
         // asagıdaki kodda ust alt sag sol dan gidince varacagı hedef 
         if (up!=null){
            if(mesafe(up,end) < hareket )
-            neighbors.add(up);
+            farNeighbors.add(up);
         }
         if (down !=null){
            if(mesafe(down,end) < hareket )
-            neighbors.add(down);
+            farNeighbors.add(down);
         }
         if (left !=null){
          if(mesafe(left,end) < hareket )
-            neighbors.add(left);
+            farNeighbors.add(left);
         }
             
         if (right != null){
             if(mesafe(right,end) < hareket )
-                  neighbors.add(right);
+                  farNeighbors.add(right);
         }
-        if(neighbors.size()>=2){
-            if(neighbors.contains(right)){
+        if(farNeighbors.size()>=2){
+            if(farNeighbors.contains(right)){
                  if(mesafe(current,end)<mesafe(right,end))
-                 neighbors.remove(right);
+                 farNeighbors.remove(right);
             }
-            if(neighbors.contains(left)){
+            if(farNeighbors.contains(left)){
                  if(mesafe(current,end)<mesafe(left,end))
-                 neighbors.remove(left);
+                 farNeighbors.remove(left);
             }
 
-            if(neighbors.contains(up)){
+            if(farNeighbors.contains(up)){
                  if(mesafe(current,end)<mesafe(up,end))
-                 neighbors.remove(up);
+                 farNeighbors.remove(up);
             }
-              if(neighbors.contains(down)){
+              if(farNeighbors.contains(down)){
                  if(mesafe(current,end)<mesafe(down,end))
-                 neighbors.remove(down);
+                 farNeighbors.remove(down);
             }
 
         }
-        return neighbors;
+        return farNeighbors;
     }
 
    
