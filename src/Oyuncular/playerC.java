@@ -132,7 +132,7 @@ public class playerC extends Player{
 
        for(int i = 0;i<oyun.getLines();i++){
             for(int j=0;j<oyun.getCols();j++){
-                if(oyun.getGrid()[i][j].isGAltin() && !(oyun.getGrid()[i][j].isGAltinGorunurluk())){
+                if(oyun.getGrid()[i][j].isHiddenGolden() && !(oyun.getGrid()[i][j].isHiddenGoldenVisible())){
                     galtin = oyun.getGrid()[i][j].p;
                     newMesafe = mesafe(start,galtin);
                     aaltin1 = galtin;
@@ -152,9 +152,9 @@ public class playerC extends Player{
        
 
        if(aaltin2.x!=0&&aaltin2.y!=0){
-           oyun.getGrid()[aaltin2.x][aaltin2.y].setGAltinGorunurluk(true);
+           oyun.getGrid()[aaltin2.x][aaltin2.y].setHiddenGoldenVisible(true);
            altintext = new JLabel();
-           altintext.setText(Integer.toString(oyun.getGrid()[aaltin2.x][aaltin2.y].getGAltinMiktari()));
+           altintext.setText(Integer.toString(oyun.getGrid()[aaltin2.x][aaltin2.y].getHiddenGoldenAmount()));
            oyunui.grid[aaltin2.x][aaltin2.y].add(altintext);
        }     
        
@@ -188,9 +188,9 @@ public class playerC extends Player{
          
            for(int i = 0;i<oyun.getLines();i++){
                 for(int j=0;j<oyun.getCols();j++){
-                    if(oyun.getGrid()[i][j].isAltin() || (oyun.getGrid()[i][j].getGAltinGorunurluk() && oyun.getGrid()[i][j].isGAltin())){
+                    if(oyun.getGrid()[i][j].isGold() || (oyun.getGrid()[i][j].getHiddenGoldenVisible() && oyun.getGrid()[i][j].isHiddenGolden())){
                         altin = oyun.getGrid()[i][j].p;
-                        hesapaltinmiktari = oyun.getGrid()[i][j].getAltinMiktari();
+                        hesapaltinmiktari = oyun.getGrid()[i][j].getGoldAmount();
                         newMesafe = mesafe(start,altin);
                         // üce kadar 5 maliyet  ucten sonra mesafe bolu uc carpı 5
                         if(newMesafe <= getAdimSayisi() ){

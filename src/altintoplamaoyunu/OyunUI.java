@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package altintoplamaoyunu;
 import Oyuncular.*;
 import struct.*;
@@ -36,7 +32,7 @@ public class OyunUI extends JPanel  {
         dbg = getBackground();
         reset();
         paint(getGraphics());
-        System.out.println("TABLO OLUSTURULDU!!!");
+        
         
     }
     
@@ -52,13 +48,15 @@ public class OyunUI extends JPanel  {
                     n = new NodeUI(oyun.getGrid()[i][j].p);
                     grid[i][j] = n;
                 }
-                gbc.gridx = j; // bunları anlamadım
-                gbc.gridy = i; // anlamadım
+                gbc.gridx = j;
+                gbc.gridy = i; 
                 setBackground(dbg);
+                  System.out.println(oyun.getGrid()[i][j].isGold());
                 if(oyun.getGrid()[i][j].p.equals(oyun.getStart())){
                     playerALabel = new JLabel();
                     playerALabel.setText("A");
                     grid[i][j].add(playerALabel);
+                    
                  
                 }
                 else if (oyun.getGrid()[i][j].p.equals(oyun.getStartB())){
@@ -76,15 +74,16 @@ public class OyunUI extends JPanel  {
                     playerDLabel.setText("D");
                     grid[i][j].add(playerDLabel);
                 }
-                
-                else if (oyun.getGrid()[i][j].isAltin() && (oyun.getGrid()[i][j].p.equals(oyun.getStart()) == false)){
+               
+                else if (oyun.getGrid()[i][j].isGold()&& (oyun.getGrid()[i][j].p.equals(oyun.getStart()) == false)){
                     goldLabel = new JLabel();
-                    goldLabel.setText(Integer.toString(oyun.getGrid()[i][j].isAltinMiktari()));
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[i][j].getGoldAmount()));
                     grid[i][j].add(goldLabel);
+                  
                 }
-                else if (oyun.getGrid()[i][j].isGAltin()){
+                else if (oyun.getGrid()[i][j].isHiddenGolden()){
                     //grid[i][j].setBackground(Color.YELLOW);
-                    oyun.getGrid()[i][j].setGAltinGorunurluk(false);
+                    oyun.getGrid()[i][j].setHiddenGoldenVisible(false);
                 }
                 else
                     grid[i][j].setBackground(dbg);
@@ -95,8 +94,7 @@ public class OyunUI extends JPanel  {
                         border = new MatteBorder(1, 1, 0, 0, Color.GRAY);
                     } else{
                         border = new MatteBorder(1, 1, 0, 1, Color.GRAY);
-                    }
-                    
+                    }         
                 }
                 else{
                     if(j < oyun.getCols() -1){
@@ -117,7 +115,7 @@ public class OyunUI extends JPanel  {
            player.setHarcananAltinMiktari(player.getHarcananAltinMiktari()+player.getHamleMaliyet());
        
         ArrayList <Point> list ;
-         // player.yollarıbul3(player.getStartPoint(), player.getEndPoint());
+        
         list= player.getListe();
         Point start = new Point();
         start = player.getStartPoint();
@@ -126,51 +124,51 @@ public class OyunUI extends JPanel  {
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerALabel); // ilk hareketi yaparken kendini gösteriyor
-            grid[n.x][n.y].setBackground(Color.BLUE); // araksını mavi yapıyor
+            grid[n.x][n.y].add(playerALabel); 
+            grid[n.x][n.y].setBackground(Color.BLUE);
             this.paintAll(getGraphics());
             try {
                 Thread.sleep(0); // delay
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }   
-            if(oyun.getGrid()[n.x][n.y].isGAltin()){
-                if(oyun.getGrid()[n.x][n.y].getGAltinGorunurluk()){
-                    player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGAltinMiktari()) ;
-                    player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGAltinMiktari());
-                    oyun.getGrid()[n.x][n.y].setGAltin(false);
+            if(oyun.getGrid()[n.x][n.y].isHiddenGolden()){
+                if(oyun.getGrid()[n.x][n.y].getHiddenGoldenVisible()){
+                    player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()) ;
+                    player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount());
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(false);
                     grid[n.x][n.y].removeAll();
                 }
                 else{
-                    oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(true);
                     goldLabel = new JLabel();
-                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()));
                     grid[n.x][n.y].add(goldLabel);
                 }
     
             }  
-            if(oyun.getGrid()[n.x][n.y].isAltin()){  // eger gectiği yerde altın varsa
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getAltinMiktari()) ;
-                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setAltin(false); // o yerin altın kısmını false yap
-                // altını al ekle ganimete
-                grid[n.x][n.y].removeAll(); // panelden sil
+            if(oyun.getGrid()[n.x][n.y].isGold()){
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGoldAmount()) ;
+                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGoldAmount());
+                oyun.getGrid()[n.x][n.y].setGoldBool(false); 
+                
+                grid[n.x][n.y].removeAll(); 
             }    
-            grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            //  grid[n.x][n.y].remove(playerA); // kendini sil 
+            grid[n.x][n.y].setBackground(dbg);
+           
             end = n;
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        // grid[end.x][end.y].add(playerA); // en son kaldıgı yere kendini yazdir
+      
         grid[end.x][end.y].add(playerALabel);
-        player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
+        player.setStartPoint(end);
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
 
        }
        else{
            if(!player.gameoverA){
-                System.out.println("PARASI BITTI A NIN : "+player.getAltinMiktari());
+                System.out.println("Game over Player A  : "+player.getAltinMiktari());
                 player.gameoverA = true;
            }
            
@@ -181,11 +179,11 @@ public class OyunUI extends JPanel  {
 
 public void hareketB (playerB player){
      
-        // bunları playerb sınıfına yaz
+      
     if((player.getAltinMiktari()-player.getHamleMaliyet())>=0  && (player.gameoverB==false)){
            player.setHarcananAltinMiktari(player.getHarcananAltinMiktari()+player.getHamleMaliyet());
         ArrayList <Point> list ;
-         // player.yollarıbul3(player.getStartPoint(), player.getEndPoint());
+     
         list= player.getListe();
         Point start = new Point();
         start = player.getStartPoint();
@@ -194,50 +192,50 @@ public void hareketB (playerB player){
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerBLabel); // ilk hareketi yaparken kendini gösteriyor
-            grid[n.x][n.y].setBackground(Color.RED); // araksını mavi yapıyor
+            grid[n.x][n.y].add(playerBLabel);
+            grid[n.x][n.y].setBackground(Color.RED); 
             this.paintAll(getGraphics());
             try {
                 Thread.sleep(0); // delay
             }catch (InterruptedException e) {
                 e.printStackTrace();
             }   
-            if(oyun.getGrid()[n.x][n.y].isGAltin()){
-                if(oyun.getGrid()[n.x][n.y].getGAltinGorunurluk()){
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGAltinMiktari()) ;
-                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setGAltin(false);
+            if(oyun.getGrid()[n.x][n.y].isHiddenGolden()){
+                if(oyun.getGrid()[n.x][n.y].getHiddenGoldenVisible()){
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()) ;
+                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount());
+                oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(false);
                 grid[n.x][n.y].removeAll();
                 }
                 else{
-                    oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(true);
                     goldLabel = new JLabel();
-                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()));
                     grid[n.x][n.y].add(goldLabel);
                 }
 
             } 
-            if(oyun.getGrid()[n.x][n.y].isAltin()){  // eger gectiği yerde altın varsa
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getAltinMiktari()) ;
-                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setAltin(false); // o yerin altın kısmını false yap
-                // altını al ekle ganimete
-                grid[n.x][n.y].removeAll(); // panelden sil
+            if(oyun.getGrid()[n.x][n.y].isGold()){  
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGoldAmount()) ;
+                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGoldAmount());
+                oyun.getGrid()[n.x][n.y].setGoldBool(false); 
+              
+                grid[n.x][n.y].removeAll();
             }    
-            grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerBLabel); // kendini sil 
+            grid[n.x][n.y].setBackground(dbg);
+            grid[n.x][n.y].remove(playerBLabel);
             end = n;
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerBLabel); // en son kaldıgı yere kendini yazdir
-        player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
+        grid[end.x][end.y].add(playerBLabel);
+        player.setStartPoint(end);
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     
     }
     else{
         if(!player.gameoverB){
-        System.out.println("PARASI BITTI B NIN  hareket edemez : "+player.getAltinMiktari());
+        System.out.println("Game Over Player B : "+player.getAltinMiktari());
         player.gameoverB = true;      
         }
         
@@ -257,50 +255,50 @@ public void hareketC (playerC player){
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerCLabel); // ilk hareketi yaparken kendini gösteriyor
-            grid[n.x][n.y].setBackground(Color.ORANGE); // araksını mavi yapıyor
+            grid[n.x][n.y].add(playerCLabel);
+            grid[n.x][n.y].setBackground(Color.ORANGE); 
             this.paintAll(getGraphics());
             try {
                 Thread.sleep(0); // delay
             } catch (InterruptedException e) {
                 System.out.println("e.printStackTrace()");
             }   
-            if(oyun.getGrid()[n.x][n.y].isGAltin()){
-                if(oyun.getGrid()[n.x][n.y].getGAltinGorunurluk()){
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGAltinMiktari()) ;
-                 player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setGAltin(false);
+            if(oyun.getGrid()[n.x][n.y].isHiddenGolden()){
+                if(oyun.getGrid()[n.x][n.y].getHiddenGoldenVisible()){
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()) ;
+                 player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount());
+                oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(false);
                 grid[n.x][n.y].removeAll();
                 }
                 else{
-                    oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(true);
                     goldLabel = new JLabel();
-                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()));
                     grid[n.x][n.y].add(goldLabel);
                 }
             }
                    
-            if(oyun.getGrid()[n.x][n.y].isAltin()){  // eger gectiği yerde altın varsa
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getAltinMiktari()) ;
-                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setAltin(false); // o yerin altın kısmını false yap
-                // altını al ekle ganimete
-                grid[n.x][n.y].removeAll(); // panelden sil
+            if(oyun.getGrid()[n.x][n.y].isGold()){  
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGoldAmount()) ;
+                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGoldAmount());
+                oyun.getGrid()[n.x][n.y].setGoldBool(false); 
+               
+                grid[n.x][n.y].removeAll(); 
             }    
-            grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerCLabel); // kendini sil 
+            grid[n.x][n.y].setBackground(dbg); 
+            grid[n.x][n.y].remove(playerCLabel); 
             end = n;
                    
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerCLabel); // en son kaldıgı yere kendini yazdir
-        player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
+        grid[end.x][end.y].add(playerCLabel);
+        player.setStartPoint(end); 
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     }
     else{
         if(!player.gameoverC){
-            System.out.println("PARASI BITTI C NIN  hareket edemez : "+player.getAltinMiktari());
+            System.out.println("Game Over Player C: "+player.getAltinMiktari());
             player.gameoverC = true;
         }
         
@@ -320,48 +318,48 @@ public void hareketD (playerD player){
         for(Point n : list){
             player.setGidilenYollar(n);
             player.setToplamAdim(player.getToplamAdim()+1);
-            grid[n.x][n.y].add(playerDLabel); // ilk hareketi yaparken kendini gösteriyor
-            grid[n.x][n.y].setBackground(Color.YELLOW); // araksını mavi yapıyor
+            grid[n.x][n.y].add(playerDLabel);
+            grid[n.x][n.y].setBackground(Color.YELLOW); 
             this.paintAll(getGraphics());
             try {
                 Thread.sleep(0); // delay
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }   
-            if(oyun.getGrid()[n.x][n.y].isGAltin()){
-                if(oyun.getGrid()[n.x][n.y].getGAltinGorunurluk()){
-                    player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGAltinMiktari()) ;
-                    player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGAltinMiktari());
-                    oyun.getGrid()[n.x][n.y].setGAltin(false);
+            if(oyun.getGrid()[n.x][n.y].isHiddenGolden()){
+                if(oyun.getGrid()[n.x][n.y].getHiddenGoldenVisible()){
+                    player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()) ;
+                    player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount());
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(false);
                     grid[n.x][n.y].removeAll();
                 }
                 else{
-                    oyun.getGrid()[n.x][n.y].setGAltinGorunurluk(true);
+                    oyun.getGrid()[n.x][n.y].setHiddenGoldenVisible(true);
                     goldLabel = new JLabel();
-                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getGAltinMiktari()));
+                    goldLabel.setText(Integer.toString(oyun.getGrid()[n.x][n.y].getHiddenGoldenAmount()));
                     grid[n.x][n.y].add(goldLabel);
                 }
             }
-            if(oyun.getGrid()[n.x][n.y].isAltin()){  // eger gectiği yerde altın varsa
-                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getAltinMiktari()) ;
-                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getAltinMiktari());
-                oyun.getGrid()[n.x][n.y].setAltin(false); // o yerin altın kısmını false yap
-                // altını al ekle ganimete
-                grid[n.x][n.y].removeAll(); // panelden sil
+            if(oyun.getGrid()[n.x][n.y].isGold()){ 
+                player.setAltinMiktari(player.getAltinMiktari()+ oyun.getGrid()[n.x][n.y].getGoldAmount()) ;
+                player.setToplananAltinMiktari(player.getToplananAltinMiktari()+oyun.getGrid()[n.x][n.y].getGoldAmount());
+                oyun.getGrid()[n.x][n.y].setGoldBool(false); 
+                
+                grid[n.x][n.y].removeAll();
             }    
-            grid[n.x][n.y].setBackground(dbg); // arkasını eski haline getir
-            grid[n.x][n.y].remove(playerDLabel); // kendini sil 
+            grid[n.x][n.y].setBackground(dbg);
+            grid[n.x][n.y].remove(playerDLabel);
             end = n;
         }
         player.setToplamAdim(player.getToplamAdim()-1);
         player.setAltinMiktari(player.getAltinMiktari()-player.getHamleMaliyet()); 
-        grid[end.x][end.y].add(playerDLabel); // en son kaldıgı yere kendini yazdir
-        player.setStartPoint(end); // en son kaldiğin yeri kendi startına yolla
+        grid[end.x][end.y].add(playerDLabel); 
+        player.setStartPoint(end); 
         player.getGidilenYollar().remove(player.getGidilenYollar().size()-1);
     }
     else{
         if(!player.gameoverD){
-            System.out.println("PARASI BITTI D NIN  hareket edemez : "+player.getAltinMiktari());
+            System.out.println("Game Over Player D: "+player.getAltinMiktari());
             player.gameoverD = true;
         }
         

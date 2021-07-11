@@ -1,54 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package struct;
-
 import java.awt.Point;
-
-/**
- *
- * @author AYAZ
- */
-
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-
 public class Oyun {
-
-   
     public static boolean gameover = false;
-    private int lines,cols,altinoran,galtinoran;
+    private int lines,cols,goldRation,hiddenGoldenRation;
     private Node[][] grid;
     private final Point start = new Point(0,0);
-    public ArrayList<Node> altinlar = new ArrayList();
-    public ArrayList<Node> galtinlar = new ArrayList();
+    public ArrayList<Node> goldArrayList = new ArrayList();
+    public ArrayList<Node> hiddenGoldenArrayList = new ArrayList();
     public Oyun(int lines,int cols,int altinoran,int galtinoran){
         this.lines = lines;
         this.cols=cols;
         this.grid = new Node[lines][cols];
-        
-        // buraya player a  b c d eklersin
-        this.altinoran=altinoran;
-        this.galtinoran=galtinoran;
-      
-        // hepsi için yapması 
+        this.goldRation=altinoran;
+        this.hiddenGoldenRation=galtinoran;
         initGrid();
-        // oyuncuların altına altin ve gizli altin geliyor onu ayalra.
-        goldinitGrid();
-        
+        goldinitGrid(); 
     }
-    
- 
     
     private void initGrid(){
         for(int i = 0;i<lines;i++){
@@ -59,62 +31,53 @@ public class Oyun {
         }
     }
     private void goldinitGrid(){
-        int goldNumber = (lines*cols*altinoran)/100;
-        int ggoldNumber = (goldNumber*galtinoran)/100;
-        int randIntx,randInty,golddeger,randx,randy;
-        int countAltin = 0;
-        int countGAltin = 0;
+        int goldNumber = (lines*cols*goldRation)/100, hiddenGoldenNumber = (goldNumber*hiddenGoldenRation)/100;
+        int randIntx,randInty,golddeger,randx,randy,countAltin = 0, countGAltin = 0;
         
         while(countAltin != goldNumber){
             randIntx=((int)(Math.random()*lines));
             randInty=((int)(Math.random()*cols));
-                 if(randIntx== lines)
+            if(randIntx== lines)
                  randIntx = randIntx - 1;
-
             if(randInty== cols)
                 randInty = randInty - 1;
             Node n = new Node(randIntx,randInty);
-            if(altinlar.contains(n) == false && (n.p.equals(getStart())) == false ){
-              
-                altinlar.add(n);
+            
+            if(goldArrayList.contains(n) == false && (n.p.equals(getStart())) == false ){
+                goldArrayList.add(n);
                 golddeger = random(20,5);  
-                // if bloguna player a b c d eklersin
-                n.setAltin(true);
-                n.setAltinMiktari(golddeger);
+                n.setGoldBool(true);
+                n.setGoldAmount(golddeger);
                 countAltin++;
                 grid[randIntx][randInty] = n;   
             }
         }
             
-             while(countGAltin != ggoldNumber){
+        while(countGAltin != hiddenGoldenNumber){
             randx=((int)(Math.random()*lines));
             randy=((int)(Math.random()*cols));
-                 if(randx== lines)
+            if(randx== lines)
                  randx = randx - 1;
-
             if(randy== cols)
                 randy = randy - 1;
             Node m = new Node(randx,randy);
-            if(galtinlar.contains(m) == false && (m.p.equals(getStart())) == false){
-                galtinlar.add(m);
+            if(hiddenGoldenArrayList.contains(m) == false && (m.p.equals(getStart())) == false){
+                hiddenGoldenArrayList.add(m);
                 golddeger = random(20,5);
-                 if(m.p.equals(start))
-                     m.setGAltin(false);
-                 // if bloguna player a b c d eklersin
-                  m.setGAltin(true);
-                  m.setGAltinMiktari(golddeger);
-                  countGAltin++;
-                  grid[randx][randy] = m;        
+                if(m.p.equals(start))
+                    m.setHiddenGoldenVisible(false);
+                m.setHiddenGoldenVisible(true);
+                m.setHiddenGoldenAmount(golddeger);
+                countGAltin++;
+                grid[randx][randy] = m;        
             }
             
         }
-        System.out.println("ALtın Sayısı  : "+countAltin+" Gizli Altin Sayisi : "+countGAltin);
+        System.out.println("Gold Number  : "+countAltin+" Hidden Golden Number : "+countGAltin);
     
     }
-    
-    
-    
-     public int mesafe(Point a,Point b){
+
+     public int distance(Point a,Point b){
         return  Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
     

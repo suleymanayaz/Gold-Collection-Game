@@ -142,10 +142,10 @@ public class playerD extends Player {
        if(hedefvar && ((altinmiktari-hedefBelirlemeMaliyet) >= 0) ){
            for(int i = 0;i<oyun.getLines();i++){
                 for(int j=0;j<oyun.getCols();j++){
-                    if(oyun.getGrid()[i][j].isAltin() || (oyun.getGrid()[i][j].getGAltinGorunurluk() && oyun.getGrid()[i][j].isGAltin())){
+                    if(oyun.getGrid()[i][j].isGold() || (oyun.getGrid()[i][j].getHiddenGoldenVisible() && oyun.getGrid()[i][j].isHiddenGolden())){
                          altin = oyun.getGrid()[i][j].p; 
                          if(!(altin.equals(olmazA)) && !(altin.equals(olmazB)) && !(altin.equals(olmazC))){
-                            hesapaltinmiktari = oyun.getGrid()[i][j].getAltinMiktari();
+                            hesapaltinmiktari = oyun.getGrid()[i][j].getGoldAmount();
                              newMesafe = mesafe(start,altin);
                             // üce kadar 5 maliyet  ucten sonra mesafe bolu uc carpı 5
                             if(newMesafe <= getAdimSayisi() ){

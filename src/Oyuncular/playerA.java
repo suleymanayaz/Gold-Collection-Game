@@ -134,7 +134,7 @@ public class playerA extends Player {
         if(hedefvar && ((altinmiktari-hedefBelirlemeMaliyet) >= 0)){
             for(int i = 0;i<oyun.getLines();i++){
                 for(int j=0;j<oyun.getCols();j++){
-                    if(oyun.getGrid()[i][j].isAltin() || (oyun.getGrid()[i][j].getGAltinGorunurluk() && oyun.getGrid()[i][j].isGAltin())){
+                    if(oyun.getGrid()[i][j].isGold()|| (oyun.getGrid()[i][j].getHiddenGoldenVisible() && oyun.getGrid()[i][j].isHiddenGolden())){
                         altin = oyun.getGrid()[i][j].p;
                         newMesafe = mesafe(start,altin);
                         if(lastMesafe == 0){

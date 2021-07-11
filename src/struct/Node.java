@@ -1,75 +1,56 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package struct;
 
 import java.awt.Point;
 
-/**
- *
- * @author AYAZ
- */
 
 
 public class Node {
     public Point p;
 
- 
-    private int altinmiktari;
-    private int galtinmiktari;
-    private boolean altin,galtin,galtingorunurluk,cgaltingorunurluk;
+    private int GoldAmount;
+    private int HiddenGoldenAmount;
+    private boolean goldBool,hiddenGoldenBool,hiddenGoldenVisible;
 
 
     public Node(int x, int y) {
         this.p = new Point(x,y);
     }
 
-    public boolean isAltin() {
-        return altin;
+    public boolean isGold() {
+        return goldBool;
     }
-    public boolean isGAltin(){
-        return galtin;
+    
+    public boolean isHiddenGolden(){
+        return hiddenGoldenBool;
     }
-    public int isAltinMiktari(){
-        return altinmiktari;
+
+    public boolean isHiddenGoldenVisible(){
+        return hiddenGoldenVisible;
     }
-    public int isGAltinMiktari(){
-        return galtinmiktari;
+    
+    public void setGoldBool(boolean goldBool) {
+        this.goldBool = goldBool;
     }
-    public boolean isGAltinGorunurluk(){
-        return galtingorunurluk;
+
+    public void setHiddenGoldenVisible(boolean hiddenGoldenVisible){
+        this.hiddenGoldenVisible = hiddenGoldenVisible;
     }
-    public void setAltin(boolean altin) {
-        this.altin = altin;
+  
+    public void setGoldAmount(int miktar){
+        this.GoldAmount = miktar;
     }
-    public void setGAltin(boolean galtin){
-        this.galtin = galtin;
+    public void setHiddenGoldenAmount(int miktar){
+        this.HiddenGoldenAmount = miktar;
     }
-    public void setGAltinGorunurluk(boolean galtin){
-        this.galtingorunurluk = galtin;
+    public int getGoldAmount(){
+        return this.GoldAmount;
     }
-    public void setCGAltinGorunurluk(boolean galtin){
-        this.cgaltingorunurluk = galtin;
+    public int getHiddenGoldenAmount(){
+        return this.HiddenGoldenAmount;
     }
-    public void setAltinMiktari(int miktar){
-        this.altinmiktari = miktar;
-    }
-    public void setGAltinMiktari(int miktar){
-        this.galtinmiktari = miktar;
-    }
-    public int getAltinMiktari(){
-        return this.altinmiktari;
-    }
-    public int getGAltinMiktari(){
-        return this.galtinmiktari;
-    }
-    public boolean getGAltinGorunurluk(){
-        return this.galtingorunurluk;
-    }
-     public boolean getCGAltinGorunurluk(){
-        return this.cgaltingorunurluk;
+    public boolean getHiddenGoldenVisible(){
+        return this.hiddenGoldenVisible;
     }
     
 }

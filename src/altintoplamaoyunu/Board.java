@@ -397,7 +397,7 @@ public class Board extends JFrame implements ActionListener {
                game.repaint();
                if(!(PlayerA.gameoverA)){
                   PlayerA.yollarıbul(PlayerA.getStartPoint(), PlayerA.getEndPoint(),gameBoard);
-               if(gameBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isAltin())
+               if(gameBoard.getGrid()[PlayerA.getEndPoint().x][PlayerA.getEndPoint().y].isGold())
                     gameUI.hareketA(PlayerA);
                else{
                     PlayerA.setHedefAldi(true);
@@ -416,7 +416,7 @@ public class Board extends JFrame implements ActionListener {
                
                if(!(PlayerB.gameoverB)  ){
                     PlayerB.yollarıbul(PlayerB.getStartPoint(), PlayerB.getEndPoint(),gameBoard);
-               if(gameBoard.getGrid()[PlayerB.getEndPoint().x][PlayerB.getEndPoint().y].isAltin())
+               if(gameBoard.getGrid()[PlayerB.getEndPoint().x][PlayerB.getEndPoint().y].isGold())
                     gameUI.hareketB(PlayerB);
               else{
                     PlayerB.setHedefAldi(true);
@@ -433,7 +433,7 @@ public class Board extends JFrame implements ActionListener {
              
                if(!(PlayerC.gameoverC) ){
                      PlayerC.yollarıbul(PlayerC.getStartPoint(),PlayerC.getEndPoint(),gameBoard);
-               if(gameBoard.getGrid()[PlayerC.getEndPoint().x][PlayerC.getEndPoint().y].isAltin())
+               if(gameBoard.getGrid()[PlayerC.getEndPoint().x][PlayerC.getEndPoint().y].isGold())
                     gameUI.hareketC(PlayerC);
               else{
                     PlayerC.setHedefAldi(true);
@@ -459,7 +459,7 @@ public class Board extends JFrame implements ActionListener {
                         System.out.println("D oyuncu Hedef Alınmadı Devam Ediyor !!");
                    PlayerD.yollarıbul(PlayerD.getStartPoint(),PlayerD.getEndPoint(),gameBoard);
                    Point endD = new Point(PlayerD.getEndPoint());
-                   if(gameBoard.getGrid()[endD.x][endD.y].isAltin() && checkFinish(endA,endB, endC, endD))
+                   if(gameBoard.getGrid()[endD.x][endD.y].isGold() && checkFinish(endA,endB, endC, endD))
                         gameUI.hareketD(PlayerD);
                    else{
                        PlayerD.setHedefAldi(true);
