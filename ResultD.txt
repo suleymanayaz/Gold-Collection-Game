@@ -1,6 +1,0 @@
-
-Toplam Adım Sayısı:18
-Gittiği Yerler : { (19,0) (19,1) (19,2) (19,3) (19,4) (19,5) (19,6) (19,7) (19,8) (19,9) (19,10) (18,10) (17,10) (16,10) (15,10) (15,9) (14,9) (13,9) (12,9) }
-Toplanan Altın Sayısı:45
-Harcanan Altın Miktarı:235
-Kasadaki Altin Miktari:10
