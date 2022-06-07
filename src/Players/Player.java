@@ -21,7 +21,7 @@ public class Player {
     private int _gold_Amount;
     private int _total_Number_Steps;
     private int _amount_Gold_Collected;
-    private int _setps_Number;
+    private int _steps_Number;
     private Point _start,_end;
     private boolean _have_Gold_Bool = false;
     private boolean _have_Target;
@@ -104,17 +104,17 @@ public class Player {
     }
 
     /**
-     * @return the _setps_Number
+     * @return the _steps_Number
      */
-    public int getSetps_Number() {
-        return _setps_Number;
+    public int getSteps_Number() {
+        return _steps_Number;
     }
 
     /**
-     * @param _setps_Number the _setps_Number to set
+     * @param _setps_Number the _steps_Number to set
      */
-    public void setSetps_Number(int _setps_Number) {
-        this._setps_Number = _setps_Number;
+    public void setSteps_Number(int _steps_Number) {
+        this._steps_Number = _steps_Number;
     }
 
     /**

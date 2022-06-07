@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package main;
 
 import Players.*;
@@ -13,6 +10,8 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.NumberFormat;
 import javax.swing.*;
 
@@ -74,11 +73,12 @@ public class Board extends JFrame implements ActionListener{
          _player_B._set_Target(_game_Board);
          _start_Player_C = new Point(_board_Rows-1,_board_Cols-1);
          _player_C = new PlayerC(_start_Player_C);
+         _game_UI = new GameUI(_game_Board);
          _player_C._set_Target(_game_Board,_game_UI);
          _start_Player_D = new Point(_board_Rows-1,0);
          _player_D = new PlayerD(_start_Player_D);
          
-         _game_UI = new GameUI(_game_Board);
+         
          _game.add(_game_UI);
          this.add(_game);
          
@@ -307,8 +307,8 @@ public class Board extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-         JButton source = (JButton) e.getSource();
-        if(source == _board_Settings_Button){
+         JButton _button_Source = (JButton) e.getSource();
+        if(_button_Source == _board_Settings_Button){
             Long _board_Input_Rows_Temp  = (Long) _board_Rows_Input.getValue();
             Long _board_Input_Cols_Temp  = (Long) _board_Cols_Input.getValue();
             Long _board_Input_Golden_Temp = (Long) _board_Golden_Ration_Input.getValue();
@@ -347,12 +347,12 @@ public class Board extends JFrame implements ActionListener{
             _player_B._set_Target(_game_Board);
             
             _start_Player_C = new Point(_board_Rows-1,_board_Cols-1);
+            _game_UI = new GameUI(_game_Board);
             _player_C = new PlayerC(_start_Player_C);
             _player_C._set_Target(_game_Board,_game_UI);
             _start_Player_D = new Point(_board_Rows-1,0);
             _player_D = new PlayerD(_start_Player_D);
-            _game_UI = new GameUI(_game_Board);
-            _player_C._set_Target(_game_Board, _game_UI);
+            
             _game.removeAll();
             _game.repaint();
             _game.revalidate();
@@ -361,7 +361,208 @@ public class Board extends JFrame implements ActionListener{
             _game.add(_game_UI);
             
         }
+        if(_button_Source == _board_Player_Settings_Button){
+            Long _temp_Player_A_Target_Cost = (Long) _player_A_Target_Cost.getValue();
+            Long _temp_Player_A_Move_Cost = (Long) _player_A_Move_Cost.getValue();
+            Long _temp_Player_A_Initial_Gold = (Long) _player_A_Initial_Gold_Mount.getValue();
+            Long _temp_Player_Steps_Number = (Long) _player_Steps_Number_Input.getValue();
+            
+            _player_A.setTarget_Cost(_temp_Player_A_Target_Cost.intValue());
+            _player_A.setMove_Cost(_temp_Player_A_Move_Cost.intValue());
+            _player_A.setGold_Amount(_temp_Player_A_Initial_Gold.intValue());
+            _player_A.setSteps_Number(_temp_Player_Steps_Number.intValue());
+            
+            Long _temp_Player_B_Target_Cost = (Long) _player_B_Target_Cost.getValue();
+            Long _temp_Player_B_Move_Cost = (Long) _player_B_Move_Cost.getValue();
+            Long _temp_Player_B_Initial_Gold = (Long) _player_B_Initial_Gold_Mount.getValue();
+            
+            _player_B.setTarget_Cost(_temp_Player_B_Target_Cost.intValue());
+            _player_B.setMove_Cost(_temp_Player_B_Move_Cost.intValue());
+            _player_B.setGold_Amount(_temp_Player_B_Initial_Gold.intValue());
+            _player_B.setSteps_Number(_temp_Player_Steps_Number.intValue());
+
+            Long _temp_Player_C_Target_Cost = (Long) _player_C_Target_Cost.getValue();
+            Long _temp_Player_C_Move_Cost = (Long) _player_C_Move_Cost.getValue();
+            Long _temp_Player_C_Initial_Gold = (Long) _player_C_Initial_Gold_Mount.getValue();
+            
+            _player_C.setTarget_Cost(_temp_Player_C_Target_Cost.intValue());
+            _player_C.setMove_Cost(_temp_Player_C_Move_Cost.intValue());
+            _player_C.setGold_Amount(_temp_Player_C_Initial_Gold.intValue());
+            _player_C.setSteps_Number(_temp_Player_Steps_Number.intValue());
+            
+            Long _temp_Player_D_Target_Cost = (Long) _player_D_Target_Cost.getValue();
+            Long _temp_Player_D_Move_Cost = (Long) _player_D_Move_Cost.getValue();
+            Long _temp_Player_D_Initial_Gold = (Long) _player_D_Initial_Gold_Mount.getValue();
+            
+            _player_D.setTarget_Cost(_temp_Player_D_Target_Cost.intValue());
+            _player_D.setMove_Cost(_temp_Player_D_Move_Cost.intValue());
+            _player_D.setGold_Amount(_temp_Player_D_Initial_Gold.intValue());
+            _player_D.setSteps_Number(_temp_Player_Steps_Number.intValue());
+        }
+        if(_button_Source == _board_Game_Start_Button){
+            
+            while(!_game_Board._game_Over){
+                _game.revalidate();
+                _game.repaint();
+                
+                if(!(_player_A.isHave_Gold_Bool())){
+                    _player_A._find_Golden_Ways(_player_A.getStart(),_player_A.getEnd(), _game_Board);
+                    if(_game_Board.getGrid()[_player_A.getEnd().x][_player_A.getEnd().y].isGold_Bool()){
+                        _game_UI._move_Player_A(_player_A);
+                    }else{
+                        _player_A.setHave_Target(true);
+                        _player_A._set_Target(_game_Board);
+                        _player_A._find_Golden_Ways(_player_A.getStart(),_player_A.getEnd(), _game_Board);
+                        _game_UI._move_Player_A(_player_A);
+                    }
+                    if(_player_A.isHave_Target())
+                        _player_A._set_Target(_game_Board);
+                    else
+                        System.out.println("Player A move ...");
+                    
+                }else
+                    System.out.println("Player A waiting..");
+                
+                
+                if(!(_player_B.isHave_Gold_Bool())){
+                    _player_B._find_Golden_Ways(_player_B.getStart(),_player_B.getEnd(), _game_Board);
+                    if(_game_Board.getGrid()[_player_B.getEnd().x][_player_B.getEnd().y].isGold_Bool()){
+                        _game_UI._move_Player_B(_player_B);
+                    }else{
+                        _player_B.setHave_Target(true);
+                        _player_B._set_Target(_game_Board);
+                        _player_B._find_Golden_Ways(_player_B.getStart(),_player_B.getEnd(), _game_Board);
+                        _game_UI._move_Player_B(_player_B);
+                    }
+                    if(_player_B.isHave_Target())
+                        _player_B._set_Target(_game_Board);
+                    else
+                        System.out.println("Player B move ...");
+                    
+                }else
+                    System.out.println("Player B waiting..");
+                
+                
+                if(!(_player_C.isHave_Gold_Bool())){
+                    _player_C._find_Golden_Ways(_player_C.getStart(),_player_C.getEnd(), _game_Board);
+                    if(_game_Board.getGrid()[_player_C.getEnd().x][_player_C.getEnd().y].isGold_Bool()){
+                        _game_UI._move_Player_C(_player_C);
+                    }else{
+                        _player_C.setHave_Target(true);
+                        _player_C._set_Target(_game_Board,_game_UI);
+                        _player_C._find_Golden_Ways(_player_C.getStart(),_player_C.getEnd(), _game_Board);
+                        _game_UI._move_Player_C(_player_C);
+                    }
+                    if(_player_C.isHave_Target())
+                        _player_C._set_Target(_game_Board,_game_UI);
+                    else
+                        System.out.println("Player C move ...");
+                    
+                }else
+                    System.out.println("Player C waiting..");
+                
+                
+                if(!(_player_D.isHave_Gold_Bool())){
+                    if(_player_D.isHave_Target())
+                        _player_D._set_Target(_game_Board,_player_A.getEnd() ,_player_A.getStart(), _player_B.getEnd(),_player_B.getStart(),_player_C.getEnd(),_player_C.getStart(), _game_UI);
+                    else
+                        System.out.println("Player D Move..");
+                    
+                    _player_D._find_Ways(_player_D.getStart(),_player_D.getEnd(), _game_Board);
+                    if(_game_Board.getGrid()[_player_D.getEnd().x][_player_D.getEnd().y].isGold_Bool() && _check_Short_Rota(_player_A.getEnd(),_player_B.getEnd(),_player_C.getEnd())){                 
+                        _game_UI._move_Player_D(_player_D);
+                    }else{
+                        _player_D.setHave_Target(true);
+                        _player_D._set_Target(_game_Board,_player_A.getEnd() ,_player_A.getStart(), _player_B.getEnd(),_player_B.getStart(),_player_C.getEnd(),_player_C.getStart(), _game_UI);
+                        _player_D._find_Ways(_player_D.getStart(),_player_D.getEnd(), _game_Board);
+                        _game_UI._move_Player_D(_player_D);
+                    }
+                    
+                }
+                if(_player_B.isHave_Gold_Bool() && _player_A.isHave_Gold_Bool() && _player_C.isHave_Gold_Bool() && _player_D.isHave_Gold_Bool() ){
+                    _game_Board._game_Over = true;
+                    _board_Game_Result_Label.setText(" Game Over !!!!");
+                    _board_Winner_Label.setText(_get_Winner_Player());
+                    break;
+                }
+                
+            }
+            _player_A.getPlayer_Passed_Rota_Array_List().add(_player_A.getEnd());
+            _player_B.getPlayer_Passed_Rota_Array_List().add(_player_B.getEnd());
+            _player_C.getPlayer_Passed_Rota_Array_List().add(_player_C.getEnd());
+            _player_D.getPlayer_Passed_Rota_Array_List().add(_player_D.getEnd());
+           
+            _file_Write_Passed_Rota_Player(_player_A,"A");
+            _file_Write_Passed_Rota_Player(_player_B,"B");
+            _file_Write_Passed_Rota_Player(_player_C,"C");
+            _file_Write_Passed_Rota_Player(_player_D,"D");
+            
+            System.out.println("Player A Gold Number: "+_player_A.getGold_Amount()+ "\nPlayer B Gold Number: "+_player_B.getGold_Amount()+"\nPlayer C Gold Number: "+_player_C.getGold_Amount()+"\nPlayer D Gold Number: "+_player_D.getGold_Amount());
+            
+        }
    }
+    
+    public String _get_Winner_Player(){
+        if(_player_A.getGold_Amount() > _player_B.getGold_Amount() && _player_A.getGold_Amount() > _player_C.getGold_Amount() && _player_A.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player A  of Game Winner";
+        else if (_player_B.getGold_Amount() > _player_A.getGold_Amount() && _player_B.getGold_Amount() > _player_C.getGold_Amount() && _player_B.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player B  of Game Winner";
+        else if (_player_C.getGold_Amount() > _player_A.getGold_Amount() && _player_C.getGold_Amount() > _player_B.getGold_Amount() && _player_C.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player C  of Game Winner";
+        else if (_player_D.getGold_Amount() > _player_A.getGold_Amount() && _player_D.getGold_Amount() > _player_B.getGold_Amount() && _player_D.getGold_Amount() > _player_C.getGold_Amount())
+            return "Player D  of Game Winner";
+        else if (_player_A.getGold_Amount() == _player_B.getGold_Amount() && _player_A.getGold_Amount() > _player_C.getGold_Amount() && _player_A.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player A and Player B of Game Winner";
+        else if (_player_A.getGold_Amount() == _player_C.getGold_Amount() && _player_A.getGold_Amount() > _player_B.getGold_Amount() && _player_A.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player A and Player C of Game Winner";
+        else if (_player_A.getGold_Amount() == _player_D.getGold_Amount() && _player_A.getGold_Amount() > _player_B.getGold_Amount() && _player_A.getGold_Amount() > _player_C.getGold_Amount())
+            return "Player A and Player D of Game Winner";
+        else if (_player_B.getGold_Amount() == _player_C.getGold_Amount() && _player_B.getGold_Amount() > _player_A.getGold_Amount() && _player_B.getGold_Amount() > _player_D.getGold_Amount())
+            return "Player B and Player C of Game Winner";
+        else if (_player_B.getGold_Amount() == _player_D.getGold_Amount() && _player_B.getGold_Amount() > _player_A.getGold_Amount() && _player_B.getGold_Amount() > _player_A.getGold_Amount())
+            return "Player B and Player D of Game Winner";
+        else if (_player_C.getGold_Amount() == _player_D.getGold_Amount() && _player_C.getGold_Amount() > _player_A.getGold_Amount() && _player_C.getGold_Amount() > _player_B.getGold_Amount())
+            return "Player C and Player D of Game Winner";
+        else
+            return "There is no winner, They all have the same amount of gold .";
+
+    }
+    
+    public void _file_Write_Passed_Rota_Player(Player _player, String _key){
+        _file = new File(".\\Result_Player_"+_key+".txt");
+        try{
+            FileWriter fw = new FileWriter(_file);
+            fw.write("\n Player "+_key+" Steps Number:"+_player.getSteps_Number()+"\r\n");
+            fw.write("Player passes : { ");
+            for(Point n : _player.getPlayer_Passed_Rota_Array_List()){
+                fw.write("("+n.x+","+n.y+") ");
+            }
+            fw.write("}"+"\r\n");
+            fw.write("Total number of steps:"+_player.getAmount_Gold_Collected()+"\r\n");
+            //fw.write("Amount of gold  spent:"+_player.getGoldAmountSpent()+"\r\n");
+            fw.write("Amount of gold in the case : "+(_player.getGold_Amount()+"\r\n"));
+            fw.close();
+        }catch(IOException e){
+            System.out.println("While File writing , Uppss File IOexception ");
+        }
+       
+    }
+    
+    public boolean _check_Short_Rota(Point _player_A_End,Point _player_B_End,Point _player_C_End){
+        boolean _check_Bool = true;
+        if(_distance(_player_D.getStart(), _player_A_End) > _distance(_player_A.getStart(), _player_A_End))
+            _check_Bool = false;
+        if(_distance(_player_D.getStart(), _player_B_End) > _distance(_player_B.getStart(), _player_B_End))
+            _check_Bool = false;
+        if(_distance(_player_D.getStart(), _player_C_End) > _distance(_player_C.getStart(), _player_C_End))
+            _check_Bool = false;
+        
+        return _check_Bool;
+    }
+    
+    public int _distance(Point a,Point b){
+        return  Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+    }
     
     
 }

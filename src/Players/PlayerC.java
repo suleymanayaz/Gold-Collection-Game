@@ -5,6 +5,7 @@
 package Players;
 
 import UI.GameUI;
+import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -65,6 +66,7 @@ public class PlayerC extends Player {
                        _hidden_Golden = _game.getGrid()[_rows][_cols].getP();
                        _new_Distance = _distance(_start, _hidden_Golden);
                        _temp_Hidden_Golden = _hidden_Golden;
+                      
                        if(_last_Distance == 0){
                            _last_Distance = _new_Distance;
                            _temp_2_Hidden_Golden = _hidden_Golden;
@@ -79,12 +81,16 @@ public class PlayerC extends Player {
          }
          
          if(_temp_2_Hidden_Golden.x != 0 && _temp_2_Hidden_Golden.y != 0){
+            
              _game.getGrid()[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].setHidden_Golden_Visible(true);
+             _game_UI._grid[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].removeAll();
              JLabel _gold_Label = new JLabel();
              _gold_Label.setText(Integer.toString(_game.getGrid()[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].getHidden_Golden_Amount()));
-             _game_UI._grid[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].add(_gold_Label);
+        
+            _game_UI._grid[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].add(_gold_Label);
+           //_game_UI._grid[_temp_2_Hidden_Golden.x][_temp_2_Hidden_Golden.y].setBackground(Color.YELLOW);
          }
-       
+        
      }
     
      
@@ -310,7 +316,7 @@ public class PlayerC extends Player {
        }
        
        if( _right != null){
-           if ( _distance(_left, getEnd()) < _move_Number )
+           if ( _distance(_right, getEnd()) < _move_Number )
                _far_Neighbors.add(_right);
        }
        
@@ -335,6 +341,12 @@ public class PlayerC extends Player {
        }
        return _far_Neighbors;
     }
+    
+    
+     public ArrayList<Point> get_Rota_List(){
+        return _ways;
+    }
+     
     /**
      * @return the _move_Cost
      */

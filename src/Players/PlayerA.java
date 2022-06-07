@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Players;
 
 import java.awt.Point;
@@ -106,7 +103,7 @@ public class PlayerA extends Player{
         setLast_Point(_end);
         _ways.add(getCurrent_Point());
         
-        if (_distance(getCurrent_Point(), getLast_Point()) <= getSetps_Number()){
+        if (_distance(getCurrent_Point(), getLast_Point()) <= getSteps_Number()){
             while(!_current_Point.equals(_end)){
                 setClose_Neighbors(_find_Neighbours_3(getCurrent_Point(), _move_Number, _game));
                 for(Point _temp_Point : getClose_Neighbors()){
@@ -205,7 +202,7 @@ public class PlayerA extends Player{
        }
        
        if( _right != null){
-           if ( _distance(_left, getEnd()) < _move_Number )
+           if ( _distance(_right, getEnd()) < _move_Number )
                getFar_Neighbors().add(_right);
        }
        
@@ -230,7 +227,11 @@ public class PlayerA extends Player{
        }
        return getFar_Neighbors();
     }
-
+    
+    
+    public ArrayList<Point> get_Rota_List(){
+        return _ways;
+    }
     /**
      * @return the _move_Cost
      */

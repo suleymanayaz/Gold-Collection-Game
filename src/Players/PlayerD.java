@@ -239,7 +239,7 @@ public class PlayerD extends Player  {
       }
 
       if( _right != null){
-          if ( _distance(_left, getEnd()) < _move_Number )
+          if ( _distance(_right, getEnd()) < _move_Number )
               _far_Neighbors.add(_right);
       }
 
@@ -265,6 +265,10 @@ public class PlayerD extends Player  {
       return _far_Neighbors;
     }
     
+     public ArrayList<Point> get_Rota_List(){
+        return _ways;
+    }
+     
     /**
      * @return the _move_Cost
      */
