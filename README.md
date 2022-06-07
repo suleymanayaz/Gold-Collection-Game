@@ -30,7 +30,7 @@
 
 The main goal in this game is to finish the game with the most gold.
 
-![Game_Gif](/Example_Image/readmeImages/_game.gif)
+![Game_Gif](https://github.com/suleymanayaz/Gold-Collection-Game/blob/master/Example_Images/readmeImages/_game.gif)
 
 
 
