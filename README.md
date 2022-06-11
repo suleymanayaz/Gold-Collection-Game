@@ -43,6 +43,10 @@ The main goal in this game is to finish the game with the most gold.
 ## Installation
 This min requires [Java-8 SDK](https://www.oracle.com/tr/java/technologies/javase/javase8-archive-downloads.html)
 
+## If you just want to play the game, you can download [Gold Collected Game.exe](https://github.com/suleymanayaz/Gold-Collection-Game/releases/tag/v1.0.0) from realese.
+
+
+
 ![Game_Settings](/Example_Images/readmeImages/game_settings.PNG)
 
 If you want, you can change the game board size, gold ratios, players' game features such as gold movement here.
